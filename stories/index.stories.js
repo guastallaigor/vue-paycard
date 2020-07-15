@@ -1,4 +1,4 @@
-import "../.storybook/styles.css";
+import "../.storybook/storybook.css";
 import { action } from "@storybook/addon-actions";
 import { linkTo } from "@storybook/addon-links";
 import { object, boolean, text } from "@storybook/addon-knobs";
@@ -12,6 +12,77 @@ export default {
 
 export const Default = () => ({
   components: { VuePaycard },
+  directives: {
+    "number-only": {
+      bind(el) {
+        function checkValue(event) {
+          event.target.value = event.target.value.replace(/[^0-9]/g, "");
+          if (event.charCode >= 48 && event.charCode <= 57) {
+            return true;
+          }
+          event.preventDefault();
+        }
+        el.addEventListener("keypress", checkValue);
+      }
+    },
+    "letter-only": {
+      bind(el) {
+        function checkValue(event) {
+          if (event.charCode >= 48 && event.charCode <= 57) {
+            event.preventDefault();
+          }
+          return true;
+        }
+        el.addEventListener("keypress", checkValue);
+      }
+    }
+  },
+  data: () => ({
+    minCardYear: new Date().getFullYear(),
+    mainCardNumber: "",
+    cardNumberMaxLength: 19
+  }),
+  computed: {
+    minCardMonth() {
+      if (this.valueFields.cardYear === this.minCardYear)
+        return new Date().getMonth() + 1;
+      return 1;
+    }
+  },
+  watch: {
+    cardYear() {
+      if (this.valueFields.cardMonth < this.minCardMonth) {
+        this.valueFields.cardMonth = "";
+      }
+    }
+  },
+  methods: {
+    generateMonthValue(n) {
+      return n < 10 ? `0${n}` : n;
+    },
+    toggleMask() {
+      this.isCardNumberMasked = !this.isCardNumberMasked;
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber();
+      } else {
+        this.unMaskCardNumber();
+      }
+    },
+    maskCardNumber() {
+      this.valueFields.cardNumberNotMask = this.valueFields.cardNumber;
+      this.mainCardNumber = this.valueFields.cardNumber;
+      let arr = this.valueFields.cardNumber.split("");
+      arr.forEach((element, index) => {
+        if (index > 4 && index < 14 && element.trim() !== "") {
+          arr[index] = "*";
+        }
+      });
+      this.valueFields.cardNumber = arr.join("");
+    },
+    unMaskCardNumber() {
+      this.valueFields.cardNumber = this.mainCardNumber;
+    }
+  },
   props: {
     valueFields: {
       type: Object,
@@ -56,14 +127,102 @@ export const Default = () => ({
       default: text("Background image", "")
     }
   },
-  template: `<VuePaycard
-    :inputFields="inputFields"
-    :valueFields="valueFields"
-    :labels="labels"
-    :isCardNumberMasked="isCardNumberMasked"
-    :randomBackgrounds="randomBackgrounds"
-    :backgroundImage="backgroundImage"
-  />`
+  template: `
+  <div class="card-form">
+    <div class="card-list">
+      <VuePaycard
+        :inputFields="inputFields"
+        :valueFields="valueFields"
+        :labels="labels"
+        :isCardNumberMasked="isCardNumberMasked"
+        :randomBackgrounds="randomBackgrounds"
+        :backgroundImage="backgroundImage"
+      />
+      <div class="card-form__inner">
+        <div class="card-input">
+          <label for="cardNumber" class="card-input__label">Card Number</label>
+          <input
+            type="tel"
+            :id="inputFields.cardNumber"
+            class="card-input__input"
+            :value="valueFields.cardNumber"
+            data-card-field
+            autocomplete="off"
+          />
+          <button
+            class="card-input__eye"
+            :class="{ '-active' : !isCardNumberMasked }"
+            title="Show/Hide card number"
+            tabindex="-1"
+            :disabled="valueFields.cardNumber === ''"
+            @click="toggleMask"
+          ></button>
+        </div>
+        <div class="card-input">
+          <label for="cardName" class="card-input__label">Card Holder</label>
+          <input
+            type="text"
+            :id="inputFields.cardName"
+            v-letter-only
+            class="card-input__input"
+            :value="valueFields.cardName"
+            data-card-field
+            autocomplete="off"
+          />
+        </div>
+        <div class="card-form__row">
+          <div class="card-form__col">
+            <div class="card-form__group">
+              <label for="cardMonth" class="card-input__label">Expiration Date</label>
+              <select
+                class="card-input__input -select"
+                :id="inputFields.cardMonth"
+                v-model="valueFields.cardMonth"
+                data-card-field
+              >
+                <option value disabled selected>Month</option>
+                <option
+                  v-bind:value="n < 10 ? '0' + n : n"
+                  v-for="n in 12"
+                  v-bind:disabled="n < minCardMonth"
+                  v-bind:key="n"
+                >{{generateMonthValue(n)}}</option>
+              </select>
+              <select
+                class="card-input__input -select"
+                :id="inputFields.cardYear"
+                v-model="valueFields.cardYear"
+                data-card-field
+              >
+                <option value disabled selected>Year</option>
+                <option
+                  v-bind:value="$index + minCardYear"
+                  v-for="(n, $index) in 12"
+                  v-bind:key="n"
+                >{{$index + minCardYear}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="card-form__col -cvv">
+            <div class="card-input">
+              <label for="cardCvv" class="card-input__label">CVV</label>
+              <input
+                type="tel"
+                class="card-input__input"
+                v-number-only
+                :id="inputFields.cardCvv"
+                maxlength="4"
+                :value="valueFields.cardCvv"
+                data-card-field
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `
 });
 
 Default.story = {

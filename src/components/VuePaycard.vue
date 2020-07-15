@@ -217,6 +217,7 @@ export default {
     cardType() {
       const number = this.valueFields.cardNumber;
       let re = new RegExp("^4");
+
       if (number.match(re)) return "visa";
 
       re = new RegExp("^(34|37)");
