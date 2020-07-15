@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`When I create the VueHorizontalTimeline component should match snapshot 1`] = `
+<div class="vue-horizontal-timeline">
+  <section class="timeline">
+    <ol>
+      <li style="background: rgb(3, 169, 244);">
+        <div class="time" style="min-width: 200px;">
+          <!----> <span class="title">
+            Title example 1
+          </span> <span class="content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse te...
+          </span></div>
+      </li>
+      <li style="background: rgb(3, 169, 244);">
+        <div class="time" style="min-width: 200px;">
+          <!----> <span class="title">
+            Title example 2
+          </span> <span class="content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse te...
+          </span></div>
+      </li>
+      <li style="background: rgb(3, 169, 244);">
+        <div class="time" style="min-width: 200px;">
+          <!----> <span class="title">
+            Title example 3
+          </span> <span class="content">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse te...
+          </span></div>
+      </li>
+      <li style="background: rgb(3, 169, 244);"></li>
+    </ol>
+  </section>
+</div>
+`;

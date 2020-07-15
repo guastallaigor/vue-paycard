@@ -1,0 +1,140 @@
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: circleci/node
+
+  working_directory: ~/app
+
+orbs:
+  codecov: codecov/codecov@1.0.4
+
+jobs:
+  checkout:
+    <<: *defaults
+
+    steps:
+      - restore_cache:
+          name: Restore Repository Cache
+          keys:
+            - repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+            - repo-{{ .Branch }}
+            - repo-master
+            - repo-
+
+      - checkout
+
+      - save_cache:
+          name: Save Repository Cache
+          key: repo-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - .
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  install-dependencies:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - restore_cache:
+          name: Restore yarn Package Cache
+          keys:
+            - yarn-{{ checksum "yarn.lock" }}
+            - yarn-
+
+      - run:
+          name: Install Dependencies
+          command: yarn install
+
+      - save_cache:
+          name: Save yarn Package Cache
+          key: yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
+  lint:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Add Yarn Binary Folder To $PATH
+          command: export PATH="$PATH:`yarn global bin`"
+
+      - run:
+          name: Lint JS
+          command: yarn lint
+
+  test:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Add Yarn Binary Folder To $PATH
+          command: export PATH="$PATH:`yarn global bin`"
+
+      - run:
+          name: Run tests
+          command: yarn test:unit
+
+  coverage:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Add Yarn Binary Folder To $PATH
+          command: export PATH="$PATH:`yarn global bin`"
+
+      - run:
+          name: Generate and upload coverage report
+          command: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=/home/circleci/app/coverage
+
+      - store_test_results:
+          path: ~/app/coverage
+
+      - store_artifacts:
+          path: ~/app/coverage
+          destination: ~/app/coverage
+
+      - codecov/upload:
+          token: # add token
+          file: ~/app/coverage/*.json
+          flags: frontend
+
+workflows:
+  version: 2
+
+  main:
+    jobs:
+      - checkout
+      - install-dependencies:
+          requires:
+            - checkout
+      - test:
+          requires:
+            - install-dependencies
+      - coverage:
+          requires:
+            - install-dependencies
+      - lint:
+          requires:
+            - install-dependencies

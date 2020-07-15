@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+  align-items: center;
+  background-color: transparent !important;
+  display: flex;
+  height: 97vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+#root {
+  padding: 20px;
+}

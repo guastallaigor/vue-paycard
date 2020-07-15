@@ -1,0 +1,21 @@
+# User & editor settings
+.editorconfig
+.huskyrc.json
+.vscode
+jest.config.js
+postcss.config.js
+
+# Build files
+.circleci
+.github
+.storybook
+commitlint.config.js
+node_modules
+
+# Documentation files
+storybook-static
+config
+stories
+tests
+coverage
+.eslintrc.js
