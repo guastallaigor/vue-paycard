@@ -13,9 +13,9 @@ export default {
 export const Default = () => ({
   components: { VuePaycard },
   props: {
-    formData: {
+    valueFields: {
       type: Object,
-      default: object("Credit card fields", {
+      default: object("Value fields", {
         cardName: "",
         cardNumber: "",
         cardMonth: "",
@@ -23,14 +23,24 @@ export const Default = () => ({
         cardCvv: ""
       })
     },
-    fields: {
+    inputFields: {
       type: Object,
-      default: object("Credit card fields", {
+      default: object("Input fields ids", {
         cardNumber: "v-card-number",
         cardName: "v-card-name",
         cardMonth: "v-card-month",
         cardYear: "v-card-year",
         cardCvv: "v-card-cvv"
+      })
+    },
+    labels: {
+      type: Object,
+      default: object("Labels", {
+        cardName: "Full Name",
+        cardHolder: "Card Holder",
+        cardMonth: "MM",
+        cardYear: "YY",
+        cardExpires: "Expires"
       })
     },
     isCardNumberMasked: {
@@ -47,8 +57,9 @@ export const Default = () => ({
     }
   },
   template: `<VuePaycard
-    :fields="fields"
-    :labels="formData"
+    :inputFields="inputFields"
+    :valueFields="valueFields"
+    :labels="labels"
     :isCardNumberMasked="isCardNumberMasked"
     :randomBackgrounds="randomBackgrounds"
     :backgroundImage="backgroundImage"

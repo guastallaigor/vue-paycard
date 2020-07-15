@@ -6,8 +6,11 @@
   "homepage": "https://github.com/guastallaigor/vue-paycard#readme",
   "author": "Igor Guastalla de Lima",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "delete-dev:css": "rimraf src/assets/css/style.dev.css",
+    "build:cleancss": "cleancss src/assets/css/style.dev.css -o src/assets/css/style.min.css --source-map",
+    "build:minify": "sass src/assets/css/style.css:src/assets/css/style.dev.css --style=compressed --no-source-map",
+    "build:autoprefix": "postcss src/assets/css/style.dev.css --replace --use autoprefixer",
+    "build": "npm run build:minify && npm run build:autoprefix && npm run build:cleancss && npm run delete-dev:css",
     "test:unit": "vue-cli-service test:unit",
     "test:watch": "vue-cli-service test:unit --watch",
     "commit": "git-cz",
@@ -38,9 +41,11 @@
     "@vue/cli-service": "~4.4.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/test-utils": "^1.0.3",
+    "autoprefixer": "^9.8.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-preset-vue": "^2.0.2",
+    "clean-css-cli": "^4.3.0",
     "commitizen": "^4.1.2",
     "core-js": "^3.6.5",
     "eslint": "^6.7.2",
@@ -51,6 +56,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "husky": "^4.2.5",
     "lint-staged": "^9.5.0",
+    "postcss-cli": "^7.1.1",
+    "rimraf": "^3.0.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
@@ -142,7 +149,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "cz-conventional-changelog"
     }
   }
 }

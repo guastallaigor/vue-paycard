@@ -1,12 +1,7 @@
-body {
-  background: #ddeefc;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 16px;
-}
-* {
+.card-item * {
   box-sizing: border-box;
 }
-*:focus {
+.card-item *:focus {
   outline: none;
 }
 .wrapper {

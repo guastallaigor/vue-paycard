@@ -1,10 +1,14 @@
 <template>
-  <div class="card-item" :class="{ '-active': isCardFlipped }">
+  <div
+    class="card-item"
+    :class="{ '-active': isCardFlipped }"
+    v-if="labels && inputFields"
+  >
     <div class="card-item__side -front">
       <div
-        class="card-item__focus"
         :class="{ '-active': focusElementStyle }"
         :style="focusElementStyle"
+        class="card-item__focus"
         ref="focusElement"
       ></div>
       <div class="card-item__cover">
@@ -20,8 +24,8 @@
           <div class="card-item__type">
             <transition name="slide-fade-up">
               <img
-                :src="'../assets/images/' + cardType + '.png'"
                 v-if="cardType"
+                :src="getCreditCardImage"
                 :key="cardType"
                 alt
                 class="card-item__typeImg"
@@ -30,34 +34,34 @@
           </div>
         </div>
         <label
-          :for="fields.cardNumber"
+          :for="inputFields.cardNumber"
+          :ref="inputFields.cardNumber"
           class="card-item__number"
-          :ref="fields.cardNumber"
         >
           <template>
-            <span v-for="(number, key) in currentPlaceholder" :key="key">
+            <span v-for="(n, $index) in currentPlaceholder" :key="$index">
               <transition name="slide-fade-up">
                 <div
+                  v-if="getIsNumberMasked($index, n)"
                   class="card-item__numberItem"
-                  v-if="getIsNumberMasked(key, number)"
                 >
                   *
                 </div>
                 <div
-                  class="card-item__numberItem"
-                  :class="{ '-active': number.trim() === '' }"
+                  v-else-if="valueFields.cardNumber.length > $index"
+                  :class="{ '-active': n.trim() === '' }"
                   :key="currentPlaceholder"
-                  v-else-if="labels.cardNumber.length > key"
+                  class="card-item__numberItem"
                 >
-                  {{ labels.cardNumber[key] }}
+                  {{ valueFields.cardNumber[$index] }}
                 </div>
                 <div
-                  class="card-item__numberItem"
-                  :class="{ '-active': number.trim() === '' }"
                   v-else
+                  :class="{ '-active': n.trim() === '' }"
                   :key="currentPlaceholder + 1"
+                  class="card-item__numberItem"
                 >
-                  {{ number }}
+                  {{ n }}
                 </div>
               </transition>
             </span>
@@ -65,50 +69,57 @@
         </label>
         <div class="card-item__content">
           <label
-            :for="fields.cardName"
+            :for="inputFields.cardName"
+            :ref="inputFields.cardName"
             class="card-item__info"
-            :ref="fields.cardName"
           >
-            <div class="card-item__holder">{{ "Titular do cartão" }}</div>
+            <div class="card-item__holder">
+              {{ labels.cardHolder || "Card Holder" }}
+            </div>
             <transition name="slide-fade-up">
               <div
+                v-if="valueFields.cardName.length"
                 class="card-item__name"
-                v-if="labels.cardName.length"
                 key="1"
               >
                 <transition-group name="slide-fade-right">
                   <span
-                    class="card-item__nameItem"
-                    v-for="(n, key) in labels.cardName.replace(/\s\s+/g, ' ')"
+                    v-for="(n, key) in valueFields.cardName.replace(
+                      /\s\s+/g,
+                      ' '
+                    )"
                     :key="key + 1"
+                    class="card-item__nameItem"
                     >{{ n }}</span
                   >
                 </transition-group>
               </div>
               <div class="card-item__name" v-else key="2">
-                {{ "Nome Completo" }}
+                {{ labels.cardName || "Full Name" }}
               </div>
             </transition>
           </label>
           <div class="card-item__date" ref="cardDate">
-            <label :for="fields.cardMonth" class="card-item__dateTitle">{{
-              "Expira"
+            <label :for="inputFields.cardMonth" class="card-item__dateTitle">{{
+              labels.cardExpires || "Expires"
             }}</label>
-            <label :for="fields.cardMonth" class="card-item__dateItem">
+            <label :for="inputFields.cardMonth" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="labels.cardMonth" :key="labels.cardMonth">{{
-                  labels.cardMonth
-                }}</span>
-                <span v-else key="2">{{ "MM" }}</span>
+                <span
+                  v-if="valueFields.cardMonth"
+                  :key="valueFields.cardMonth"
+                  >{{ valueFields.cardMonth }}</span
+                >
+                <span v-else key="2">{{ labels.cardMonth || "MM" }}</span>
               </transition>
             </label>
             /
             <label for="cardYear" class="card-item__dateItem">
               <transition name="slide-fade-up">
-                <span v-if="labels.cardYear" :key="labels.cardYear">{{
-                  String(labels.cardYear).slice(2, 4)
+                <span v-if="valueFields.cardYear" :key="valueFields.cardYear">{{
+                  String(valueFields.cardYear).slice(2, 4)
                 }}</span>
-                <span v-else key="2">{{ "YY" }}</span>
+                <span v-else key="2">{{ labels.cardYear || "YY" }}</span>
               </transition>
             </label>
           </div>
@@ -127,13 +138,13 @@
       <div class="card-item__cvv">
         <div class="card-item__cvvTitle">CVV</div>
         <div class="card-item__cvvBand">
-          <!-- <span v-for="(n, key) in labels.cardCvv" :key="key">*</span> -->
-          <span>{{ labels.cardCvv }}</span>
+          <!-- <span v-for="(n, key) in valueFields.cardCvv" :key="key">*</span> -->
+          <span>{{ valueFields.cardCvv }}</span>
         </div>
         <div class="card-item__type">
           <img
-            :src="'../assets/images/' + cardType + '.png'"
             v-if="cardType"
+            :src="getCreditCardImage"
             class="card-item__typeImg"
           />
         </div>
@@ -146,26 +157,30 @@
 export default {
   name: "VuePaycard",
   props: {
+    valueFields: {
+      type: Object,
+      required: true,
+    },
+    inputFields: {
+      type: Object,
+      required: true,
+    },
     labels: {
       type: Object,
-      required: true
-    },
-    fields: {
-      type: Object,
-      required: true
+      required: true,
     },
     isCardNumberMasked: {
       type: Boolean,
-      default: true
+      default: true,
     },
     randomBackgrounds: {
       type: Boolean,
-      default: true
+      default: true,
     },
     backgroundImage: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data: () => ({
     focusElementStyle: null,
@@ -175,7 +190,7 @@ export default {
     amexCardPlaceholder: "#### ###### #####",
     dinersCardPlaceholder: "#### ###### ####",
     defaultCardPlaceholder: "#### #### #### ####",
-    currentPlaceholder: ""
+    currentPlaceholder: "#### #### #### ####",
   }),
   watch: {
     currentFocus() {
@@ -187,7 +202,7 @@ export default {
     },
     cardType() {
       this.changePlaceholder();
-    }
+    },
   },
   mounted() {
     this.init();
@@ -196,8 +211,11 @@ export default {
     this.destroy();
   },
   computed: {
+    getCreditCardImage() {
+      return require(`../assets/images/${this.cardType}.png`);
+    },
     cardType() {
-      const number = this.labels.cardNumber;
+      const number = this.valueFields.cardNumber;
       let re = new RegExp("^4");
       if (number.match(re)) return "visa";
 
@@ -225,22 +243,23 @@ export default {
       return "";
     },
     currentCardBackground() {
-      if (this.randomBackgrounds && !this.backgroundImage) {
-        const random = Math.floor(Math.random() * 25 + 1);
-        return `../assets/images/${random}.jpeg`;
-      }
-
       if (this.backgroundImage) {
         return this.backgroundImage;
       }
 
+      if (this.randomBackgrounds) {
+        const random = Math.floor(Math.random() * 25 + 1);
+
+        return require(`../assets/images/${random}.jpg`);
+      }
+
       return null;
-    }
+    },
   },
   methods: {
     addOrRemoveFieldListeners(event = "addEventListener") {
-      const fields = document.querySelectorAll("[data-card-field]");
-      fields.forEach(element => {
+      const inputFields = document.querySelectorAll("[data-card-field]");
+      inputFields.forEach((element) => {
         element[event]("focus", this.setFocus);
         element[event]("blur", this.setBlur);
       });
@@ -254,20 +273,21 @@ export default {
     setFocus() {
       this.isFocused = true;
       if (
-        element.id === this.fields.cardYear ||
-        element.id === this.fields.cardMonth
+        element.id === this.inputFields.cardYear ||
+        element.id === this.inputFields.cardMonth
       ) {
         this.currentFocus = "cardDate";
       } else {
         this.currentFocus = element.id;
       }
-      this.isCardFlipped = element.id === this.fields.cardCvv;
+      this.isCardFlipped = element.id === this.inputFields.cardCvv;
     },
     setBlur(evt) {
-      this.isCardFlipped = !element.id === this.fields.cardCvv;
-      setTimeout(() => {
+      this.isCardFlipped = !element.id === this.inputFields.cardCvv;
+      const timeout = setTimeout(() => {
         if (!this.isFocused) {
           this.currentFocus = null;
+          clearTimeout(timeout);
         }
       }, 300);
       this.isFocused = false;
@@ -278,7 +298,7 @@ export default {
         ? {
             width: `${target.offsetWidth}px`,
             height: `${target.offsetHeight}px`,
-            transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
+            transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`,
           }
         : null;
     },
@@ -286,7 +306,7 @@ export default {
       return (
         index > 4 &&
         index < 14 &&
-        this.labels.cardNumber.length > index &&
+        this.valueFields.cardNumber.length > index &&
         n.trim() !== "" &&
         this.isCardNumberMasked
       );
@@ -302,9 +322,9 @@ export default {
       this.$nextTick(() => {
         this.changeFocus();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style src="../assets/style.css" scoped></style>
+<style src="../assets/css/style.min.css" scoped></style>
