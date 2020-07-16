@@ -187,14 +187,6 @@ export const Default = () => ({
             autocomplete="off"
             :maxlength="cardNumberMaxLength"
           />
-          <button
-            class="card-input__eye"
-            :class="{ '-active' : !isCardNumberMasked }"
-            title="Show/Hide card number"
-            tabindex="-1"
-            :disabled="valueFields.cardNumber === ''"
-            @click="toggleMask"
-          ></button>
         </div>
         <div class="card-input">
           <label for="cardName" class="card-input__label">Card Holder</label>
