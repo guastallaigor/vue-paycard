@@ -197,7 +197,7 @@ export default {
     },
     changeNumber (e) {
       this.formData.cardNumber = e.target.value
-      let value = this.formData.cardNumber.replace(/\D/g, '')
+      const value = this.formData.cardNumber.replace(/\D/g, '')
       // american express, 15 digits
       if ((/^3[47]\d{0,13}$/).test(value)) {
         this.formData.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
@@ -211,7 +211,7 @@ export default {
       }
       // eslint-disable-next-line eqeqeq
       if (e.inputType == 'deleteContentBackward') {
-        let lastChar = this.formData.cardNumber.substring(this.formData.cardNumber.length, this.formData.cardNumber.length - 1)
+        const lastChar = this.formData.cardNumber.substring(this.formData.cardNumber.length, this.formData.cardNumber.length - 1)
         // eslint-disable-next-line eqeqeq
         if (lastChar == ' ') { this.formData.cardNumber = this.formData.cardNumber.substring(0, this.formData.cardNumber.length - 1) }
       }
@@ -228,7 +228,7 @@ export default {
       this.$emit('input-card-cvv', this.formData.cardCvv)
     },
     invaildCard () {
-      let number = this.formData.cardNumberNotMask.replace(/ /g, '')
+      const number = this.formData.cardNumberNotMask.replace(/ /g, '')
       var sum = 0
       for (var i = 0; i < number.length; i++) {
         var intVal = parseInt(number.substr(i, 1))
@@ -252,7 +252,7 @@ export default {
     maskCardNumber () {
       this.formData.cardNumberNotMask = this.formData.cardNumber
       this.mainCardNumber = this.formData.cardNumber
-      let arr = this.formData.cardNumber.split('')
+      const arr = this.formData.cardNumber.split('')
       arr.forEach((element, index) => {
         if (index > 4 && index < 14 && element.trim() !== '') {
           arr[index] = '*'
