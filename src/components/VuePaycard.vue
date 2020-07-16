@@ -16,18 +16,19 @@
           v-if="currentCardBackground"
           :src="currentCardBackground"
           class="card-item__bg"
+          alt="Background image"
         />
       </div>
       <div class="card-item__wrapper">
         <div class="card-item__top">
-          <img src="../assets/images/chip.png" class="card-item__chip" />
+          <img src="../assets/images/chip.png" class="card-item__chip" alt="Card chip image" />
           <div class="card-item__type">
             <transition name="slide-fade-up">
               <img
                 v-if="cardType"
                 :src="getCreditCardImage"
                 :key="cardType"
-                alt
+                alt="Card brand image"
                 class="card-item__typeImg"
               />
             </transition>
@@ -114,7 +115,7 @@
               </transition>
             </label>
             /
-            <label for="cardYear" class="card-item__dateItem">
+            <label :for="inputFields.cardYear" class="card-item__dateItem">
               <transition name="slide-fade-up">
                 <span v-if="valueFields.cardYear" :key="valueFields.cardYear">{{
                   String(valueFields.cardYear).slice(2, 4)
@@ -132,13 +133,13 @@
           v-if="currentCardBackground"
           :src="currentCardBackground"
           class="card-item__bg"
+          alt="Background image"
         />
       </div>
       <div class="card-item__band"></div>
       <div class="card-item__cvv">
         <div class="card-item__cvvTitle">CVV</div>
         <div class="card-item__cvvBand">
-          <!-- <span v-for="(n, key) in valueFields.cardCvv" :key="key">*</span> -->
           <span>{{ valueFields.cardCvv }}</span>
         </div>
         <div class="card-item__type">
@@ -146,6 +147,7 @@
             v-if="cardType"
             :src="getCreditCardImage"
             class="card-item__typeImg"
+            alt="Dark bar image"
           />
         </div>
       </div>
@@ -163,11 +165,23 @@ export default {
     },
     inputFields: {
       type: Object,
-      required: true
+      default: () => ({
+        cardNumber: 'v-card-number',
+        cardName: 'v-card-name',
+        cardMonth: 'v-card-month',
+        cardYear: 'v-card-year',
+        cardCvv: 'v-card-cvv'
+      })
     },
     labels: {
       type: Object,
-      required: true
+      default: () => ({
+        cardName: 'Full Name',
+        cardHolder: 'Card Holder',
+        cardMonth: 'MM',
+        cardYear: 'YY',
+        cardExpires: 'Expires'
+      })
     },
     isCardNumberMasked: {
       type: Boolean,
@@ -178,7 +192,7 @@ export default {
       default: true
     },
     backgroundImage: {
-      type: String,
+      type: [String,  Number],
       default: ''
     }
   },
@@ -205,34 +219,11 @@ export default {
     }
   },
   mounted () {
-    this.changePlaceholder()
-
-    const self = this
-    const fields = document.querySelectorAll('[data-card-field]')
-    fields.forEach(element => {
-      element.addEventListener('focus', () => {
-        this.isFocused = true
-        if (element.id === this.inputFields.cardYear || element.id === this.inputFields.cardMonth) {
-          this.currentFocus = 'cardDate'
-        } else {
-          this.currentFocus = element.id
-        }
-        this.isCardFlipped = element.id === this.inputFields.cardCvv
-      })
-      element.addEventListener('blur', () => {
-        this.isCardFlipped = !element.id === this.inputFields.cardCvv
-        setTimeout(() => {
-          if (!self.isFocused) {
-            self.currentFocus = null
-          }
-        }, 300)
-        self.isFocused = false
-      })
-    })
+    this.init()
   },
-  // beforeDestroy() {
-  //   this.destroy();
-  // },
+  beforeDestroy() {
+    this.destroy();
+  },
   computed: {
     getCreditCardImage () {
       return require(`../assets/images/${this.cardType}.png`)
@@ -267,7 +258,13 @@ export default {
       return ''
     },
     currentCardBackground () {
-      if (this.backgroundImage) {
+      const numberImage = parseInt(this.backgroundImage)
+
+      if (Number.isFinite(numberImage) && parseInt(numberImage) < 26 && parseInt(numberImage) > 0) {
+        return require(`../assets/images/${numberImage}.jpg`)
+      }
+
+      if (this.backgroundImage && !Number.isFinite(numberImage)) {
         return this.backgroundImage
       }
 
@@ -281,41 +278,36 @@ export default {
     }
   },
   methods: {
-    // addOrRemoveFieldListeners(event = "addEventListener") {
-    //   const inputFields = document.querySelectorAll("[data-card-field]");
-    //   inputFields.forEach((element) => {
-    //     element[event]("focus", this.setFocus(element));
-    //     element[event]("blur", this.setBlur(element));
-    //   });
-    // },
-    // destroy() {
-    //   this.addOrRemoveFieldListeners("removeEventListener");
-    // },
-    // init() {
-    //   this.addOrRemoveFieldListeners();
-    // },
-    // setFocus(element) {
-    //   this.isFocused = true;
-    //   if (
-    //     element.id === this.inputFields.cardYear ||
-    //     element.id === this.inputFields.cardMonth
-    //   ) {
-    //     this.currentFocus = "cardDate";
-    //   } else {
-    //     this.currentFocus = element.id;
-    //   }
-    //   this.isCardFlipped = element.id === this.inputFields.cardCvv;
-    // },
-    // setBlur(element) {
-    //   this.isCardFlipped = !element.id === this.inputFields.cardCvv;
-    //   const timeout = setTimeout(() => {
-    //     if (!this.isFocused) {
-    //       this.currentFocus = null;
-    //       clearTimeout(timeout);
-    //     }
-    //   }, 300);
-    //   this.isFocused = false;
-    // },
+    addOrRemoveFieldListeners(event = 'addEventListener') {
+      const self = this
+      const fields = document.querySelectorAll('[data-card-field]')
+      fields.forEach(element => {
+        element[event]('focus', () => {
+          this.isFocused = true
+          if (element.id === this.inputFields.cardYear || element.id === this.inputFields.cardMonth) {
+            this.currentFocus = 'cardDate'
+          } else {
+            this.currentFocus = element.id
+          }
+          this.isCardFlipped = element.id === this.inputFields.cardCvv
+        })
+        element[event]('blur', () => {
+          this.isCardFlipped = !element.id === this.inputFields.cardCvv
+          setTimeout(() => {
+            if (!self.isFocused) {
+              self.currentFocus = null
+            }
+          }, 300)
+          self.isFocused = false
+        })
+      })
+    },
+    init() {
+      this.addOrRemoveFieldListeners()
+    },
+    destroy() {
+      this.addOrRemoveFieldListeners("removeEventListener");
+    },
     changeFocus () {
       const target = this.$refs[this.currentFocus]
       this.focusElementStyle = target
@@ -328,7 +320,6 @@ export default {
     },
     getIsNumberMasked (index, n) {
       return (
-        index > 4 &&
         index < 14 &&
         this.valueFields.cardNumber.length > index &&
         n.trim() !== '' &&

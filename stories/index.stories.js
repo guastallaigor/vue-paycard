@@ -1,6 +1,4 @@
 import "../.storybook/storybook.css";
-import { action } from "@storybook/addon-actions";
-import { linkTo } from "@storybook/addon-links";
 import { object, boolean, text } from "@storybook/addon-knobs";
 
 import VuePaycard from "../src/components/VuePaycard.vue";
@@ -75,10 +73,10 @@ export const Default = () => ({
         this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
         this.cardNumberMaxLength = 19
       }
-      // eslint-disable-next-line eqeqeq
+      // eslint-disable-next-line
       if (e.inputType == 'deleteContentBackward') {
         let lastChar = this.valueFields.cardNumber.substring(this.valueFields.cardNumber.length, this.valueFields.cardNumber.length - 1)
-        // eslint-disable-next-line eqeqeq
+        // eslint-disable-next-line
         if (lastChar == ' ') { this.valueFields.cardNumber = this.valueFields.cardNumber.substring(0, this.valueFields.cardNumber.length - 1) }
       }
       this.$emit('input-card-number', this.valueFields.cardNumber)
@@ -159,7 +157,7 @@ export const Default = () => ({
       default: boolean("Random backgrounds", true)
     },
     backgroundImage: {
-      type: [String, Object],
+      type: [String, Number],
       default: text("Background image", "")
     }
   },
@@ -258,5 +256,5 @@ export const Default = () => ({
 });
 
 Default.story = {
-  name: "to Storybook"
+  name: "Default"
 };

@@ -7,6 +7,9 @@ body,
   height: 97vh;
   justify-content: center;
   width: 100vw;
+  font-family: -apple-system, BlinkMacSystemFont, 'Source Sans Pro', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
 
 * {

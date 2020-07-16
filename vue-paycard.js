@@ -2,7 +2,7 @@ import VuePaycard from './src/components/VuePaycard.vue'
 
 const VuePaycardPlugin = {
   install (Vue) {
-    Vue.component(name, VuePaycard)
+    Vue.component('VuePaycard', VuePaycard)
   }
 }
 
