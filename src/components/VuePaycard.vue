@@ -205,11 +205,34 @@ export default {
     },
   },
   mounted() {
-    this.init();
+    this.changePlaceholder()
+
+    let self = this
+    let fields = document.querySelectorAll('[data-card-field]')
+    fields.forEach(element => {
+      element.addEventListener('focus', () => {
+        this.isFocused = true
+        if (element.id === this.inputFields.cardYear || element.id === this.inputFields.cardMonth) {
+          this.currentFocus = 'cardDate'
+        } else {
+          this.currentFocus = element.id
+        }
+        this.isCardFlipped = element.id === this.inputFields.cardCvv
+      })
+      element.addEventListener('blur', () => {
+        this.isCardFlipped = !element.id === this.inputFields.cardCvv
+        setTimeout(() => {
+          if (!self.isFocused) {
+            self.currentFocus = null
+          }
+        }, 300)
+        self.isFocused = false
+      })
+    })
   },
-  beforeDestroy() {
-    this.destroy();
-  },
+  // beforeDestroy() {
+  //   this.destroy();
+  // },
   computed: {
     getCreditCardImage() {
       return require(`../assets/images/${this.cardType}.png`);
@@ -258,42 +281,43 @@ export default {
     },
   },
   methods: {
-    addOrRemoveFieldListeners(event = "addEventListener") {
-      const inputFields = document.querySelectorAll("[data-card-field]");
-      inputFields.forEach((element) => {
-        element[event]("focus", this.setFocus);
-        element[event]("blur", this.setBlur);
-      });
-    },
-    destroy() {
-      this.addOrRemoveFieldListeners("removeEventListener");
-    },
-    init() {
-      this.addOrRemoveFieldListeners();
-    },
-    setFocus() {
-      this.isFocused = true;
-      if (
-        element.id === this.inputFields.cardYear ||
-        element.id === this.inputFields.cardMonth
-      ) {
-        this.currentFocus = "cardDate";
-      } else {
-        this.currentFocus = element.id;
-      }
-      this.isCardFlipped = element.id === this.inputFields.cardCvv;
-    },
-    setBlur(evt) {
-      this.isCardFlipped = !element.id === this.inputFields.cardCvv;
-      const timeout = setTimeout(() => {
-        if (!this.isFocused) {
-          this.currentFocus = null;
-          clearTimeout(timeout);
-        }
-      }, 300);
-      this.isFocused = false;
-    },
+    // addOrRemoveFieldListeners(event = "addEventListener") {
+    //   const inputFields = document.querySelectorAll("[data-card-field]");
+    //   inputFields.forEach((element) => {
+    //     element[event]("focus", this.setFocus(element));
+    //     element[event]("blur", this.setBlur(element));
+    //   });
+    // },
+    // destroy() {
+    //   this.addOrRemoveFieldListeners("removeEventListener");
+    // },
+    // init() {
+    //   this.addOrRemoveFieldListeners();
+    // },
+    // setFocus(element) {
+    //   this.isFocused = true;
+    //   if (
+    //     element.id === this.inputFields.cardYear ||
+    //     element.id === this.inputFields.cardMonth
+    //   ) {
+    //     this.currentFocus = "cardDate";
+    //   } else {
+    //     this.currentFocus = element.id;
+    //   }
+    //   this.isCardFlipped = element.id === this.inputFields.cardCvv;
+    // },
+    // setBlur(element) {
+    //   this.isCardFlipped = !element.id === this.inputFields.cardCvv;
+    //   const timeout = setTimeout(() => {
+    //     if (!this.isFocused) {
+    //       this.currentFocus = null;
+    //       clearTimeout(timeout);
+    //     }
+    //   }, 300);
+    //   this.isFocused = false;
+    // },
     changeFocus() {
+      console.log("changeFocus", this.$refs, this.currentFocus)
       const target = this.$refs[this.currentFocus];
       this.focusElementStyle = target
         ? {
@@ -313,13 +337,12 @@ export default {
       );
     },
     changePlaceholder() {
-      if (this.cardType === "amex") {
-        this.currentPlaceholder = this.amexCardPlaceholder;
-      } else if (this.cardType === "dinersclub") {
-        this.currentPlaceholder = this.dinersCardPlaceholder;
-      } else {
-        this.currentPlaceholder = this.defaultCardPlaceholder;
+      let cardsPlaceholder = {
+        "amex": this.amexCardPlaceholder,
+        "dinersclub": this.dinersCardPlaceholder,
       }
+
+      this.currentPlaceholder = cardsPlaceholder[this.cardType] || this.defaultCardPlaceholder
       this.$nextTick(() => {
         this.changeFocus();
       });
