@@ -1,4 +1,10 @@
-import { addDecorator } from "@storybook/vue";
-import { withA11y } from "@storybook/addon-a11y";
+import { addDecorator } from '@storybook/vue'
+import { withA11y } from '@storybook/addon-a11y'
+import { addParameters } from '@storybook/vue'
 
-addDecorator(withA11y);
+addParameters({
+  docs: {
+    inlineStories: true,
+  },
+})
+addDecorator(withA11y)

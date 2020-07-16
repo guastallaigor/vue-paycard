@@ -258,3 +258,22 @@ export const Default = () => ({
 Default.story = {
   name: "Default"
 };
+
+Default.parameters = {
+  backgrounds: {
+    default: 'white',
+    values: [
+      { name: 'twitter', value: '#00aced' },
+      { name: 'facebook', value: '#3b5998' },
+      { name: 'red', value: 'red' },
+      { name: 'blue', value: 'blue' },
+      { name: 'green', value: 'green' },
+      { name: 'yellow', value: 'yellow' },
+      { name: 'purple', value: 'purple' },
+      { name: 'white', value: 'white' },
+      { name: 'black', value: 'black' },
+      { name: 'orange', value: 'orange' },
+      { name: 'brown', value: 'brown' },
+    ],
+  },
+};

@@ -1,10 +1,10 @@
 module.exports = {
-  stories: ["../stories/**/*.stories.js"],
+  stories: ['../stories/**/*.stories.js'],
   addons: [
-    "@storybook/addon-actions",
-    "@storybook/addon-knobs",
-    "@storybook/addon-links",
-    "@storybook/addon-notes",
-    "@storybook/addon-backgrounds"
+    '@storybook/addon-knobs',
+    '@storybook/addon-docs',
+    '@storybook/addon-backgrounds/register',
+    '@storybook/addon-a11y',
+    '@storybook/addon-viewport/register'
   ]
 };
