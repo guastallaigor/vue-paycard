@@ -152,7 +152,7 @@ export const Default = () => ({
     },
     isCardNumberMasked: {
       type: Boolean,
-      default: boolean("Is credit card number masked", false)
+      default: boolean("Is credit card number masked", true)
     },
     randomBackgrounds: {
       type: Boolean,
