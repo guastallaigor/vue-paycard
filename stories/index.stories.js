@@ -185,6 +185,7 @@ export const Default = () => ({
             @input="changeNumber"
             data-card-field
             autocomplete="off"
+            :maxlength="cardNumberMaxLength"
           />
           <button
             class="card-input__eye"
