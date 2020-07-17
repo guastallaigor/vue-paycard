@@ -26,7 +26,7 @@ There are a few reasons for creating this project
 
 First of all, a few of us developers needed a good and well designed Vue.js lightweight zero dependencies credit card component with **only** the card, no form attached
 
-Also, Vue Interactive Paycard isn't a Vue.js npm component that you can simply add it to your project, and it doesn't seem to be maintained 
+Also, Vue Interactive Paycard isn't a Vue.js npm component that you can simply add it to your project, and it doesn't seem to be maintained
 
 So this project is the Card component from there, but with some differences:
 
@@ -44,7 +44,7 @@ So this project is the Card component from there, but with some differences:
 
 Go to https://vue-paycard.netlify.com
 
-> **Note**: This form component is just an example, **you** will need to create yours or copy it from `src/stories/index.stories.js`
+> **Note**: The form inside is just an example, **you** will need to create yours or copy it from `src/stories/index.stories.js`
 
 ## How to install
 
@@ -54,7 +54,7 @@ Go to https://vue-paycard.netlify.com
 $ npm install vue-paycard --save
 ```
 
-### yarn (recommended)
+### yarn
 
 ```bash
 $ yarn add vue-paycard
@@ -80,8 +80,8 @@ import { VuePaycard } from 'vue-paycard'
 
 export default {
   components: {
-    VuePaycard,
-  },
+    VuePaycard
+  }
 }
 ```
 
@@ -187,4 +187,4 @@ If an error occurs, you can use the `npm run commit:retry` command that runs the
 
 ## License
 
-[MIT](https://github.com/guastallaigor/vue-paycard/blob/master/LICENSE) © 
+[MIT](https://github.com/guastallaigor/vue-paycard/blob/master/LICENSE) ©
