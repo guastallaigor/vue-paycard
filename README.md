@@ -34,7 +34,7 @@ So this project is the Card component from there, but with some differences:
 2. All the images were optimized and have their width exactly as they need;
 3. The name of some of the props were changed and some of the code was refactored;
 4. The prop `labels` was added, so we don't need any i18n library;
-5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/) and [Jest](https://vue-test-utils.vuejs.org/).
+5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/), [Jest](https://vue-test-utils.vuejs.org/) and [Circle CI](https://circleci.com/).
 
 ## Demo
 

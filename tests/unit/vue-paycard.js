@@ -1,22 +1,9 @@
-import { mount } from '@vue/test-utils'
-import VueHorizontalTimeline from '../../src/components/VueHorizontalTimeline'
+import { shallowMount } from '@vue/test-utils'
+import VuePaycard from '../../src/components/VuePaycard'
 
-describe('When I create the VueHorizontalTimeline component', () => {
-  const value1 = {
-    title: 'Title example 1',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse tempor rutrum eros, non pellentesque odio commodo eu. Donec at volutpat enim. Vivamus mattis volutpat urna, sit amet vulputate mauris sollicitudin et. Proin consequat at dolor in sodales. Vestibulum vel porta turpis. Pellentesque sollicitudin justo est, ut dapibus felis luctus mollis. Suspendisse feugiat, metus ut auctor dictum, nulla dui fringilla nisl, a pulvinar ipsum justo non lacus. Integer vestibulum sapien metus, et congue felis efficitur iaculis. Aliquam et mi quis nulla molestie elementum. Vestibulum in nibh nibh.'
-  }
-  const value2 = {
-    title: 'Title example 2',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse tempor rutrum eros, non pellentesque odio commodo eu. Donec at volutpat enim. Vivamus mattis volutpat urna, sit amet vulputate mauris sollicitudin et. Proin consequat at dolor in sodales. Vestibulum vel porta turpis. Pellentesque sollicitudin justo est, ut dapibus felis luctus mollis. Suspendisse feugiat, metus ut auctor dictum, nulla dui fringilla nisl, a pulvinar ipsum justo non lacus. Integer vestibulum sapien metus, et congue felis efficitur iaculis. Aliquam et mi quis nulla molestie elementum. Vestibulum in nibh nibh.'
-  }
-  const value3 = {
-    title: 'Title example 3',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse tempor rutrum eros, non pellentesque odio commodo eu. Donec at volutpat enim. Vivamus mattis volutpat urna, sit amet vulputate mauris sollicitudin et. Proin consequat at dolor in sodales. Vestibulum vel porta turpis. Pellentesque sollicitudin justo est, ut dapibus felis luctus mollis. Suspendisse feugiat, metus ut auctor dictum, nulla dui fringilla nisl, a pulvinar ipsum justo non lacus. Integer vestibulum sapien metus, et congue felis efficitur iaculis. Aliquam et mi quis nulla molestie elementum. Vestibulum in nibh nibh.'
-  }
-  const items = [value1, value2, value3]
+describe('When I create the VuePaycard component', () => {
   const createTimelineWrapper = (propsData = {}, slot = '') => {
-    return mount(VueHorizontalTimeline, {
+    return shallowMount(VuePaycard, {
       propsData,
       slots: {
         default: slot
@@ -26,7 +13,7 @@ describe('When I create the VueHorizontalTimeline component', () => {
 
   it('should be a Vue instance', () => {
     const wrapper = createTimelineWrapper({ items })
-    expect(wrapper.find(VueHorizontalTimeline).isVueInstance()).toBe(true)
+    expect(wrapper.find(VuePaycard).isVueInstance()).toBe(true)
   })
 
   it('should add a text-center class inside the title if titleCentered prop is added', () => {
@@ -49,7 +36,7 @@ describe('When I create the VueHorizontalTimeline component', () => {
   })
 
   it('should print html inside slot', () => {
-    const html = '<p id="find-this-id">VueHorizontalTimeline</p>'
+    const html = '<p id="find-this-id">VuePaycard</p>'
     const wrapper = createTimelineWrapper({ items }, html)
     const slot = wrapper.find('p#find-this-id')
 
