@@ -37,6 +37,7 @@
         <label
           :for="inputFields.cardNumber"
           :ref="inputFields.cardNumber"
+          aria-label="Card number"
           class="card-item__number"
         >
           <template>
@@ -72,6 +73,7 @@
           <label
             :for="inputFields.cardName"
             :ref="inputFields.cardName"
+            aria-label="Card name"
             class="card-item__info"
           >
             <div class="card-item__holder">
@@ -101,10 +103,10 @@
             </transition>
           </label>
           <div class="card-item__date" ref="cardDate">
-            <label :for="inputFields.cardMonth" class="card-item__dateTitle">{{
+            <label :for="inputFields.cardMonth" class="card-item__dateTitle" aria-label="Expiration date">{{
               labels.cardExpires || "Expires"
             }}</label>
-            <label :for="inputFields.cardMonth" class="card-item__dateItem">
+            <label :for="inputFields.cardMonth" class="card-item__dateItem" aria-label="Card month">
               <transition name="slide-fade-up">
                 <span
                   v-if="valueFields.cardMonth"
@@ -115,7 +117,7 @@
               </transition>
             </label>
             /
-            <label :for="inputFields.cardYear" class="card-item__dateItem">
+            <label :for="inputFields.cardYear" class="card-item__dateItem" aria-label="Card year">
               <transition name="slide-fade-up">
                 <span v-if="valueFields.cardYear" :key="valueFields.cardYear">{{
                   String(valueFields.cardYear).slice(2, 4)

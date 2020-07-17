@@ -185,6 +185,7 @@ export const DefaultComponent = () => ({
           <input
             type="tel"
             :id="inputFields.cardNumber"
+            title="Number"
             class="card-input__input"
             :value="valueFields.cardNumber"
             @input="changeNumber"
@@ -198,6 +199,7 @@ export const DefaultComponent = () => ({
           <input
             type="text"
             :id="inputFields.cardName"
+            title="Name"
             v-letter-only
             class="card-input__input"
             :value="valueFields.cardName"
@@ -209,10 +211,12 @@ export const DefaultComponent = () => ({
         <div class="card-form__row">
           <div class="card-form__col">
             <div class="card-form__group">
-              <label for="cardMonth" class="card-input__label">Expiration Date</label>
+              <label for="cardMonth" class="card-input__label" aria-label="Expiration Date">Expiration Date (Month / Year)</label>
               <select
                 class="card-input__input -select"
                 :id="inputFields.cardMonth"
+                aria-label="Card Month"
+                title="Month"
                 v-model="valueFields.cardMonth"
                 data-card-field
               >
@@ -227,6 +231,8 @@ export const DefaultComponent = () => ({
               <select
                 class="card-input__input -select"
                 :id="inputFields.cardYear"
+                aria-label="Card year"
+                title="Year"
                 v-model="valueFields.cardYear"
                 data-card-field
               >
@@ -241,9 +247,10 @@ export const DefaultComponent = () => ({
           </div>
           <div class="card-form__col -cvv">
             <div class="card-input">
-              <label for="cardCvv" class="card-input__label">CVV</label>
+              <label for="cardCvv" class="card-input__label" aria-label="Card CVV">CVV</label>
               <input
                 type="tel"
+                title="CVV"
                 class="card-input__input"
                 v-number-only
                 :id="inputFields.cardCvv"

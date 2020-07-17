@@ -11,7 +11,12 @@ body,
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
-
+#docs-root .card-form__inner {
+  display: none;
+}
+#docs-root .card-form {
+  margin-top: 90px;
+}
 * {
   box-sizing: border-box;
 }
