@@ -192,7 +192,7 @@ export default {
       default: true
     },
     backgroundImage: {
-      type: [String,  Number],
+      type: [String, Number],
       default: ''
     }
   },
@@ -221,8 +221,8 @@ export default {
   mounted () {
     this.init()
   },
-  beforeDestroy() {
-    this.destroy();
+  beforeDestroy () {
+    this.destroy()
   },
   computed: {
     getCreditCardImage () {
@@ -278,7 +278,7 @@ export default {
     }
   },
   methods: {
-    addOrRemoveFieldListeners(event = 'addEventListener') {
+    addOrRemoveFieldListeners (event = 'addEventListener') {
       const self = this
       const fields = document.querySelectorAll('[data-card-field]')
       fields.forEach(element => {
@@ -302,11 +302,11 @@ export default {
         })
       })
     },
-    init() {
+    init () {
       this.addOrRemoveFieldListeners()
     },
-    destroy() {
-      this.addOrRemoveFieldListeners("removeEventListener");
+    destroy () {
+      this.addOrRemoveFieldListeners('removeEventListener')
     },
     changeFocus () {
       const target = this.$refs[this.currentFocus]

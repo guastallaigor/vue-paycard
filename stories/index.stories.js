@@ -1,56 +1,63 @@
-import "../.storybook/storybook.css";
-import { object, boolean, text } from "@storybook/addon-knobs";
+import '../.storybook/storybook.css'
+import { object, boolean, text } from '@storybook/addon-knobs'
+import { addDecorator, addParameters } from '@storybook/vue'
+import { withA11y } from '@storybook/addon-a11y'
+import VuePaycard from '../src/components/VuePaycard.vue'
 
-import VuePaycard from "../src/components/VuePaycard.vue";
+addParameters({
+  docs: {
+    inlineStories: true
+  }
+})
+addDecorator(withA11y)
 
 export default {
-  title: "VuePaycard",
+  title: 'VuePaycard',
   component: VuePaycard
 };
 
-export const Default = () => ({
+export const DefaultComponent = () => ({
   components: { VuePaycard },
   directives: {
-    "number-only": {
-      bind(el) {
-        function checkValue(event) {
-          event.target.value = event.target.value.replace(/[^0-9]/g, "");
+    'number-only': {
+      bind (el) {
+        function checkValue (event) {
+          event.target.value = event.target.value.replace(/[^0-9]/g, '');
           if (event.charCode >= 48 && event.charCode <= 57) {
-            return true;
+            return true
           }
-          event.preventDefault();
+          event.preventDefault()
         }
-        el.addEventListener("keypress", checkValue);
+        el.addEventListener('keypress', checkValue)
       }
     },
-    "letter-only": {
-      bind(el) {
-        function checkValue(event) {
+    'letter-only': {
+      bind (el) {
+        function checkValue (event) {
           if (event.charCode >= 48 && event.charCode <= 57) {
-            event.preventDefault();
+            event.preventDefault()
           }
-          return true;
+          return true
         }
-        el.addEventListener("keypress", checkValue);
+        el.addEventListener('keypress', checkValue)
       }
     }
   },
   data: () => ({
     minCardYear: new Date().getFullYear(),
-    mainCardNumber: "",
+    mainCardNumber: '',
     cardNumberMaxLength: 19
   }),
   computed: {
-    minCardMonth() {
-      if (this.valueFields.cardYear === this.minCardYear)
-        return new Date().getMonth() + 1;
-      return 1;
+    minCardMonth () {
+      if (this.valueFields.cardYear === this.minCardYear) return new Date().getMonth() + 1
+      return 1
     }
   },
   watch: {
-    cardYear() {
+    cardYear () {
       if (this.valueFields.cardMonth < this.minCardMonth) {
-        this.valueFields.cardMonth = "";
+        this.valueFields.cardMonth = '';
       }
     }
   },
@@ -91,30 +98,30 @@ export const Default = () => ({
       this.valueFields.cardCvv = e.target.value
       this.$emit('input-card-cvv', this.valueFields.cardCvv)
     },
-    generateMonthValue(n) {
-      return n < 10 ? `0${n}` : n;
+    generateMonthValue (n) {
+      return n < 10 ? `0${n}` : n
     },
-    toggleMask() {
-      this.isCardNumberMasked = !this.isCardNumberMasked;
+    toggleMask () {
+      this.isCardNumberMasked = !this.isCardNumberMasked
       if (this.isCardNumberMasked) {
-        this.maskCardNumber();
+        this.maskCardNumber()
       } else {
-        this.unMaskCardNumber();
+        this.unMaskCardNumber()
       }
     },
-    maskCardNumber() {
-      this.valueFields.cardNumberNotMask = this.valueFields.cardNumber;
-      this.mainCardNumber = this.valueFields.cardNumber;
-      let arr = this.valueFields.cardNumber.split("");
+    maskCardNumber () {
+      this.valueFields.cardNumberNotMask = this.valueFields.cardNumber
+      this.mainCardNumber = this.valueFields.cardNumber
+      let arr = this.valueFields.cardNumber.split('')
       arr.forEach((element, index) => {
-        if (index > 4 && index < 14 && element.trim() !== "") {
-          arr[index] = "*";
+        if (index > 4 && index < 14 && element.trim() !== '') {
+          arr[index] = '*'
         }
       });
-      this.valueFields.cardNumber = arr.join("");
+      this.valueFields.cardNumber = arr.join('')
     },
-    unMaskCardNumber() {
-      this.valueFields.cardNumber = this.mainCardNumber;
+    unMaskCardNumber () {
+      this.valueFields.cardNumber = this.mainCardNumber
     },
   },
   props: {
@@ -150,15 +157,15 @@ export const Default = () => ({
     },
     isCardNumberMasked: {
       type: Boolean,
-      default: boolean("Is credit card number masked", true)
+      default: boolean('Is credit card number masked', true)
     },
     randomBackgrounds: {
       type: Boolean,
-      default: boolean("Random backgrounds", true)
+      default: boolean('Random backgrounds', true)
     },
     backgroundImage: {
       type: [String, Number],
-      default: text("Background image", "")
+      default: text('Background image', '')
     }
   },
   template: `
@@ -255,25 +262,6 @@ export const Default = () => ({
   `
 });
 
-Default.story = {
-  name: "Default"
-};
-
-Default.parameters = {
-  backgrounds: {
-    default: 'white',
-    values: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-      { name: 'red', value: 'red' },
-      { name: 'blue', value: 'blue' },
-      { name: 'green', value: 'green' },
-      { name: 'yellow', value: 'yellow' },
-      { name: 'purple', value: 'purple' },
-      { name: 'white', value: 'white' },
-      { name: 'black', value: 'black' },
-      { name: 'orange', value: 'orange' },
-      { name: 'brown', value: 'brown' },
-    ],
-  },
+DefaultComponent.story = {
+  name: 'Default'
 };
