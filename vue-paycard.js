@@ -1,4 +1,4 @@
-import VuePaycard from './src/components/VuePaycard.vue'
+import VuePaycard from './src/components/VuePaycard'
 
 const VuePaycardPlugin = {
   install (Vue) {
