@@ -8,10 +8,7 @@
   Credit card component made with Vue.js
 </p>
 <p align="center">
-  This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>
-</p>
-<p align="center">
-  All the credits for the component (idea, design, images, core code) goes to it
+  This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it
 </p>
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
@@ -37,7 +34,7 @@ So this project is the Card component from there, but with some differences:
 2. All the images were optimized and have their width exactly as they need;
 3. The name of some of the props were changed and some of the code was refactored;
 4. The prop `labels` was added, so we don't need any i18n library;
-5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/) and [Jest](https://vue-test-utils.vuejs.org/)
+5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/) and [Jest](https://vue-test-utils.vuejs.org/).
 
 ## Demo
 
@@ -132,8 +129,8 @@ plugins: [{ src: '~/plugins/vue-paycard.js', mode: 'client' }]
 | Property name         |   Type           |  Default  | Description |
 | --------------------- | ---------------- | --------- | ----------- |
 | value-fields          | Object           |   null    | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)) |
-| input-fields          | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' } | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides |
-| labels                | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires' } | Set custom labels for the card if needed. English by default |
+| input-fields          | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' } | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
+| labels                | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
 | is-card-number-masked | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
 | random-backgrounds    | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
 | background-image      | [String, Number] | ''        | Set a background image link to the card (overrides `random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
@@ -142,7 +139,7 @@ plugins: [{ src: '~/plugins/vue-paycard.js', mode: 'client' }]
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/guastallaigor/vue-paycard/issues)
 
-> **Note**: Contributions are very welcomed, however is very important to open a new issue using the issue template before you start working on anything, so that neither of us waste time
+> **Note**: Contributions are very welcomed, however is very important to open a new issue using the issue template **before** you start working on anything, so we can discuss it before hand
 
 Fork the project and enter this commands in your terminal
 
@@ -172,7 +169,9 @@ $ npm run test:watch
 
 ### CSS
 
-All the CSS is at `src/assets/css/style.css`. If you make any changes in that file, you will need to run `npm run build` to build it, because the component uses the minified version at `src/assets/css/style.min.css`
+All the CSS is at `src/assets/css/style.css`
+
+If you make any changes in that file, you will need to run `npm run build` to build it, because the component uses the minified version at `src/assets/css/style.min.css`
 
 ### Commitlint
 
