@@ -59,13 +59,13 @@ jobs:
     - name: Run coverage
       run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=./coverage
 
-    # - name: Upload coverage to Codecov
-    #   uses: codecov/codecov-action@v1
-    #   with:
-    #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     file: ./coverage/*.json
-    #     name: vue-paycard
-    #     fail_ci_if_error: true
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage/*.json
+        name: vue-paycard
+        fail_ci_if_error: true
 
     # ## Coverage
     # - name: Coveralls
