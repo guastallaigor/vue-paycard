@@ -17,26 +17,24 @@ jobs:
 
     - name: Cache node modules
       uses: actions/cache@v2
-      id: cache-node-modules
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
-
-    - name: Cache yarn cache
-      uses: actions/cache@v2
-      id: cache-yarn-cache
+      id: yarn-cache
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+           ${{ runner.os }}-yarn-
+
+    # - name: Cache yarn cache
+    #   uses: actions/cache@v2
+    #   id: cache-yarn-cache
+    #   with:
+    #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+    #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-yarn-
           
     - name: Install Dependencies
-      if: |
-        steps.cache-yarn-cache.outputs.cache-hit != 'true' ||
-        steps.cache-node-modules.outputs.cache-hit != 'true'
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn
     
     ## Test
