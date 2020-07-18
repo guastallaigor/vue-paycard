@@ -9,7 +9,7 @@
 </p>
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
-[![CircleCI](https://badgen.net/circleci/github/guastallaigor/vue-paycard/master)](https://circleci.com/gh/guastallaigor/vue-list-picker/tree/master)
+[![GithubActions](https://github.com/guastallaigor/vue-paycard/workflows/vue-paycard/badge.svg)](https://github.com/guastallaigor/vue-paycard/actions)
 [![codecov](https://codecov.io/gh/guastallaigor/vue-paycard/branch/master/graph/badge.svg)](https://codecov.io/gh/guastallaigor/vue-paycard)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
@@ -33,7 +33,7 @@ So this project is the Card component from there, but with some differences:
 2. All the images were optimized and have their width exactly as they need;
 3. The name of some of the props were changed and some of the code was refactored;
 4. The prop `labels` was added, so we don't need any i18n library;
-5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/), [Circle CI](https://circleci.com/), etc.
+5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/), [Github Actions](https://github.com/features/actions), etc.
 
 ## Demo
 
@@ -147,7 +147,7 @@ Fork the project and enter this commands in your terminal
 ```sh
 $ git clone https://github.com/YOUR_GITHUB_USERNAME/vue-paycard.git
 $ cd vue-paycard
-$ npm install
+$ yarn
 ```
 
 ### Storybook
@@ -155,7 +155,7 @@ $ npm install
 For visual testing, this project contains storybook which you can run by doing the next command
 
 ```sh
-$ npm run storybook
+$ yarn storybook
 ```
 
 ### Jest
@@ -165,24 +165,24 @@ Before making the PR, if you changed something that needs to be tested, please m
 To run the tests, you can use the next command
 
 ```sh
-$ npm run test:watch
+$ yarn test:watch
 ```
 
 ### CSS
 
 All the CSS is at `src/assets/css/style.css`
 
-If you make any changes in that file, you will need to run `npm run build` to build it, because the component uses the minified version at `src/assets/css/style.min.css`
+If you make any changes in that file, you will need to run `yarn build` to build it, because the component uses the minified version at `src/assets/css/style.min.css`
 
 ### Commitlint
 
 This project follows the [commitlint](https://github.com/conventional-changelog/commitlint) guidelines, with minor changes
 
-You can commit using `npm run commit` to help you with that
+You can commit using `yarn commit` to help you with that
 
 There's a `pre-push` hook that runs all the unit tests before you can push it
 
-If an error occurs, you can use the `npm run commit:retry` command that runs the previous `npm run commit` that you already filled
+If an error occurs, you can use the `yarn commit:retry` command that runs the previous `npm run commit` that you already filled
 
 <a href="https://www.buymeacoffee.com/guastallaigor" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
