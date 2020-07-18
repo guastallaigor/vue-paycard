@@ -17,7 +17,7 @@ jobs:
 
     - name: ls
       id: yarn-cache-dir-path
-      run: ls -la
+      run: mkdir ./coverage
     # ## Yarn dir
     # - name: Get yarn cache directory path
     #   id: yarn-cache-dir-path
@@ -58,12 +58,15 @@ jobs:
     # - name: Lint JS
     #   run: yarn lint
 
+    # ## Coverage
+    # - name: Run coverage
+    #   run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=./coverage
+
     # - name: Upload coverage to Codecov
     #   uses: codecov/codecov-action@v1
     #   with:
     #     token: ${{ secrets.CODECOV_TOKEN }}
-    #     file: ~/app/coverage/*.json
-    #     directory: ./coverage/reports/
+    #     file: ./coverage/*.json
     #     name: vue-paycard
     #     fail_ci_if_error: true
 
