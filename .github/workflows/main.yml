@@ -18,22 +18,28 @@ jobs:
     - name: Cache node modules
       uses: actions/cache@v2
       with:
-        path: ~/.yarn
-        key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          v1-yarn-deps-
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+        # path: ~/.yarn
+        # key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
+        # restore-keys: |
+        #   v1-yarn-deps-
 
     - name: Install Dependencies
-      run: yarn install
+      run: npm install
     
     ## Test
-    - name: Run tests
-      run: yarn test:unit
+    # - name: Run tests
+    #   run: yarn test:unit
 
     ## Coverage
     # - name: Coverage
     #   run: 
 
     ## Lint
-    - name: Lint JS
-      run: yarn lint
+    # - name: Lint JS
+    #   run: yarn lint
