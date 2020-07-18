@@ -15,13 +15,13 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # - name: Cache node modules
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: ~/.yarn
-    #     key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
-    #     restore-keys: |
-    #       v1-yarn-deps-
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.yarn
+        key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          v1-yarn-deps-
 
     - name: Install Dependencies
       run: yarn install
