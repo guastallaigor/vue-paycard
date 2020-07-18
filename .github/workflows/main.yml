@@ -51,6 +51,10 @@ jobs:
     # - name: Coverage
     #   run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=/coverage
 
+    ## Commit lint
+    - name: Run Commit Lint
+      run: yarn commitmsg
+
     ## Lint
     - name: Lint JS
       run: yarn lint
