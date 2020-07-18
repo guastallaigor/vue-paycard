@@ -98,7 +98,9 @@ Vue.use(VuePaycard)
 and then import it in your `nuxt.config.js` file
 
 ```js
-plugins: [{ src: '~/plugins/vue-paycard.js', mode: 'client' }]
+plugins: [
+  { src: '~/plugins/vue-paycard.js', mode: 'client' }
+]
 ```
 
 ## <a name="usage">Basic usage</a>
