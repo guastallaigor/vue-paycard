@@ -31,9 +31,14 @@ jobs:
       run: yarn test:unit
 
     ## Coverage
-    # - name: Coverage
-    #   run: 
+    - name: Coverage
+      run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=/coverage
 
     ## Lint
     - name: Lint JS
       run: yarn lint
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
