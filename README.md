@@ -7,9 +7,6 @@
 <p align="center">
   Credit card component made with Vue.js
 </p>
-<p align="center">
-  This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it
-</p>
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
 [![CircleCI](https://badgen.net/circleci/github/guastallaigor/vue-paycard/master)](https://circleci.com/gh/guastallaigor/vue-list-picker/tree/master)
@@ -18,7 +15,10 @@
 [![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
 [![Dependencies](https://img.shields.io/david/guastallaigor/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
 
-> **Note**: This component only exports the Card component, **you** will need to create your own form
+
+> This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it
+
+> This component only exports the Card component, **you** will need to create your own form.
 
 ## Reason
 
