@@ -8,34 +8,27 @@ on:
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   ci:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
 
     - name: Cache node modules
       uses: actions/cache@v2
       with:
         path: ~/.yarn
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-        # path: ~/.npm
-        # key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
-        # restore-keys: v1-npm-deps-
+          ${{ runner.OS }}-npm-cache-
+        #   ${{ runner.os }}-build-
+        #   ${{ runner.os }}-
+        # path: ~/.yarn
+        # key: v1-yarn-deps-${{ hashFiles('**/package-lock.json') }}
+        # restore-keys: v1-yarn-deps-
 
     - name: Install Dependencies
       run: yarn install
@@ -43,9 +36,11 @@ jobs:
     ## Lint
     - name: Lint JS
       run: yarn lint
+    
+    # ## Test
+    # - name: Run tests
+    #   run: yarn test:unit
 
-    # # Runs a set of commands using the runners shell
-    # - name: Run a multi-line script
-    #   run: |
-    #     echo Add other actions to build,
-    #     echo test, and deploy your project.
+    ## Coverage
+    # - name: Coverage
+    #   run: 
