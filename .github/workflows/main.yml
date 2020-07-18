@@ -52,19 +52,10 @@ jobs:
       run: yarn lint
 
        ## Coverage
-    - name: Coverage
-      run: yarn test:unit --coverage
+    # - name: Coverage
+    #   run: yarn test:unit --coverage
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Coveralls
-    #   uses: ziishaned/jest-reporter-action@v0.0.1
-    #   with:
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #     test-command: "yarn jest --coverage"
-
-    ## Commit lint
-    - name: Run Commit Lint
-      run: yarn commitmsg
