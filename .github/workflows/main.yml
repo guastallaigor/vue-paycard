@@ -15,27 +15,27 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
+    # - name: Get yarn cache directory path
+    #   id: yarn-cache-dir-path
+    #   run: echo "::set-output name=dir::$(yarn cache dir)"
 
-    - name: Cache yarn cache
-      uses: actions/cache@v2
-      id: cache-yarn-cache
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+    # - name: Cache yarn cache
+    #   uses: actions/cache@v2
+    #   id: cache-yarn-cache
+    #   with:
+    #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+    #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-yarn-
           
-    - name: Cache node_modules
-      id: cache-node-modules
-      uses: actions/cache@v2
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
+    # - name: Cache node_modules
+    #   id: cache-node-modules
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: node_modules
+    #     key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
     
     - name: Install Dependencies
       # if: |
@@ -47,19 +47,24 @@ jobs:
     - name: Run tests
       run: yarn test:unit
 
-    ## Coverage
-    # - name: Coverage
-    #   run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=/coverage
-
-    ## Commit lint
-    - name: Run Commit Lint
-      run: yarn commitmsg
-
     ## Lint
     - name: Lint JS
       run: yarn lint
 
+       ## Coverage
+    - name: Coverage
+      run: yarn test:unit --coverage
+
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     # - name: Coveralls
-    #   uses: coverallsapp/github-action@master
+    #   uses: ziishaned/jest-reporter-action@v0.0.1
     #   with:
     #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     test-command: "yarn jest --coverage"
+
+    ## Commit lint
+    - name: Run Commit Lint
+      run: yarn commitmsg
