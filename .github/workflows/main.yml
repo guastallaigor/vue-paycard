@@ -47,18 +47,19 @@ jobs:
         steps.cache-node-modules.outputs.cache-hit != 'true'
       run: yarn
     
-    # ## Test
-    # - name: Run tests
-    #   run: yarn test:unit
+    ## Test
+    - name: Run tests
+      run: yarn test:unit
 
-    # ## Lint
-    # - name: Lint JS
-    #   run: yarn lint
+    ## Lint
+    - name: Lint JS
+      run: yarn lint
 
-    # ## Coverage
+    ## Coverage
     - name: Run coverage
       run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=./coverage
 
+    ## Codecov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
@@ -67,7 +68,7 @@ jobs:
         name: vue-paycard
         fail_ci_if_error: true
 
-    # ## Coverage
+    ## Coverall
     # - name: Coveralls
     #   uses: coverallsapp/github-action@master
     #   with:
