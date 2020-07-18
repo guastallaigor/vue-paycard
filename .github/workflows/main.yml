@@ -15,31 +15,25 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-        # path: ~/.yarn
-        # key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
-        # restore-keys: |
-        #   v1-yarn-deps-
+    # - name: Cache node modules
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: ~/.yarn
+    #     key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
+    #     restore-keys: |
+    #       v1-yarn-deps-
 
     - name: Install Dependencies
-      run: npm install
+      run: yarn install
     
     ## Test
-    # - name: Run tests
-    #   run: yarn test:unit
+    - name: Run tests
+      run: yarn test:unit
 
     ## Coverage
     # - name: Coverage
     #   run: 
 
     ## Lint
-    # - name: Lint JS
-    #   run: yarn lint
+    - name: Lint JS
+      run: yarn lint
