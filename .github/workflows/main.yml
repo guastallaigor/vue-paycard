@@ -1,7 +1,5 @@
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     branches: [ master ]
@@ -21,26 +19,21 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.yarn
-        key: ${{ runner.OS }}-npm-cache-${{ hashFiles('**/package-lock.json') }}
+        key: v1-yarn-deps-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.OS }}-npm-cache-
-        #   ${{ runner.os }}-build-
-        #   ${{ runner.os }}-
-        # path: ~/.yarn
-        # key: v1-yarn-deps-${{ hashFiles('**/package-lock.json') }}
-        # restore-keys: v1-yarn-deps-
+          v1-yarn-deps-
 
     - name: Install Dependencies
       run: yarn install
-
-    ## Lint
-    - name: Lint JS
-      run: yarn lint
     
-    # ## Test
-    # - name: Run tests
-    #   run: yarn test:unit
+    ## Test
+    - name: Run tests
+      run: yarn test:unit
 
     ## Coverage
     # - name: Coverage
     #   run: 
+
+    ## Lint
+    - name: Lint JS
+      run: yarn lint
