@@ -27,16 +27,25 @@ jobs:
     - name: Cache node modules
       uses: actions/cache@v2
       with:
-        path: ~/.npm
-        key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: v1-npm-deps-
+        path: ~/.yarn
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+        # path: ~/.npm
+        # key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+        # restore-keys: v1-npm-deps-
+
+    - name: Install Dependencies
+      run: yarn install
 
     ## Lint
     - name: Lint JS
       run: yarn lint
 
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    # # Runs a set of commands using the runners shell
+    # - name: Run a multi-line script
+    #   run: |
+    #     echo Add other actions to build,
+    #     echo test, and deploy your project.
