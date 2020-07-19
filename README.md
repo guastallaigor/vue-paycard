@@ -6,12 +6,12 @@
   Credit card component made with Vue.js
 </p>
 
-[![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
+[![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
 [![GithubActions](https://github.com/guastallaigor/vue-paycard/workflows/vue-paycard/badge.svg)](https://github.com/guastallaigor/vue-paycard/actions)
 [![codecov](https://codecov.io/gh/guastallaigor/vue-paycard/branch/master/graph/badge.svg)](https://codecov.io/gh/guastallaigor/vue-paycard)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-[![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
-[![Dependencies](https://img.shields.io/david/guastallaigor/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
+[![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
+[![Dependencies](https://img.shields.io/david/guastallaigor/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/blob/master/package.json)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a87b7690-b534-4c67-b4a6-60e586bd79b5/deploy-status)](https://app.netlify.com/sites/vue-paycard/deploys)
 
 > This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it </br></br>
@@ -128,7 +128,7 @@ plugins: [
 | labels                 | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires', cardCvv: 'CVV' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
 | is-card-number-masked  | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
 | has-random-backgrounds | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
-| background-image       | [String, Number] | ''        | Set a background image link to the card (overrides `random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
+| background-image       | [String, Number] | ''        | Set a background image link to the card (overrides `has-random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
 
 ## Development
 
