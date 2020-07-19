@@ -1,5 +1,3 @@
-<h1 align="center"><strong>Work in progress (WIP)</strong></h1>
-
 <div align="center">
   <img src="./.github/logo.png" width="200px">
   <h1>Vue Paycard</h1>
