@@ -332,6 +332,52 @@ describe('When I create the VuePaycard component', () => {
     expect(covers.at(1).attributes()['aria-label']).toBe('Image cover')
   })
 
+    it('should validate all props', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const consoleLog = console.error
+    console.error = jest.fn()
+    const wrapper = createPaycard({ valueFields })
+    const valueFieldsProp = wrapper.vm.$options.props.valueFields
+    expect(valueFieldsProp.required).toBeTruthy()
+    expect(valueFieldsProp.type).toBe(Object)
+    expect(valueFieldsProp.default).toBeUndefined()
+    const inputFields = wrapper.vm.$options.props.inputFields
+    expect(inputFields.required).toBeFalsy()
+    expect(inputFields.type).toBe(Object)
+    expect(inputFields.default()).toMatchObject({
+      cardNumber: 'v-card-number',
+      cardName: 'v-card-name',
+      cardMonth: 'v-card-month',
+      cardYear: 'v-card-year',
+      cardCvv: 'v-card-cvv'
+    })
+    const labels = wrapper.vm.$options.props.labels
+    expect(labels.required).toBeFalsy()
+    expect(labels.type).toBe(Object)
+    expect(labels.default()).toMatchObject({
+      cardName: 'Full Name',
+      cardHolder: 'Card Holder',
+      cardMonth: 'MM',
+      cardYear: 'YY',
+      cardExpires: 'Expires',
+      cardCvv: 'CVV'
+    })
+    const isCardNumberMasked = wrapper.vm.$options.props.isCardNumberMasked
+    expect(isCardNumberMasked.required).toBeFalsy()
+    expect(isCardNumberMasked.type).toBe(Boolean)
+    expect(isCardNumberMasked.default).toBe(true)
+    const hasRandomBackgrounds = wrapper.vm.$options.props.hasRandomBackgrounds
+    expect(hasRandomBackgrounds.required).toBeFalsy()
+    expect(hasRandomBackgrounds.type).toBe(Boolean)
+    expect(hasRandomBackgrounds.default).toBe(true)
+    const backgroundImage = wrapper.vm.$options.props.backgroundImage
+    expect(backgroundImage.required).toBeFalsy()
+    expect(backgroundImage.type).toContain(Number)
+    expect(backgroundImage.type).toContain(String)
+    expect(backgroundImage.default).toBe('')
+    console.error = consoleLog
+  })
+
   it('should match default component snapshot', () => {
     const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
     const wrapper = createPaycard({ valueFields })
