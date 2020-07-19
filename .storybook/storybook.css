@@ -132,9 +132,15 @@ body,
   justify-content: space-between;
   align-items: center;
 }
+@media screen and (max-width: 759px) {
+  .card-list {
+    flex-flow: column nowrap;
+    margin-top: 200px;
+  }
+}
 @media screen and (max-width: 480px) {
   .card-list {
-    margin-bottom: -120px;
+    margin-bottom: 0;
   }
 }
 .card-input {

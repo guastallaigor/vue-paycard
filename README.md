@@ -33,10 +33,6 @@ So this project is the Card component from there, but with some differences:
 4. The prop `labels` was added, so we don't need any i18n library;
 5. This project has a development environment using [Storybook](https://storybook.js.org/docs/guides/guide-vue/), [Github Actions](https://github.com/features/actions), etc.
 
-## Demo
-
-> TODO
-
 ## Storybook
 
 Go to https://vue-paycard.netlify.app
