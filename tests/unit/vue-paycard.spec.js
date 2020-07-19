@@ -7,14 +7,11 @@ describe('When I create the VuePaycard component', () => {
       return this.$options._renderChildren
     }
   })
-  const createPaycard = (propsData = {}, slot = '') => {
+  const createPaycard = (propsData = {}) => {
     return mount(VuePaycard, {
       propsData,
       stubs: {
         transition: transitionStub()
-      },
-      slots: {
-        default: slot
       }
     })
   }
@@ -251,6 +248,25 @@ describe('When I create the VuePaycard component', () => {
     expect(unmaskedNumbers.length).toBe(4)
     spaces = numbers.filter(it => it === '')
     expect(spaces.length).toBe(2)
+  })
+
+  it('should be remove all input events', () => {
+    // * this test needs improvement since it doesn't have any form
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = mount(VuePaycard, {
+      propsData: {
+        valueFields
+      },
+      stubs: {
+        transition: transitionStub()
+      },
+      attachTo: document.body
+    })
+    expect(wrapper.exists()).toBeTruthy()
+    const fields = document.querySelectorAll('[data-card-field]')
+    expect(fields).toMatchObject({})
+    wrapper.destroy()
+    expect(wrapper.exists()).toBeFalsy()
   })
 
   it('should match default component snapshot', () => {
