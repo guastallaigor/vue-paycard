@@ -4,7 +4,7 @@ exports[`When I create the VuePaycard component should match default component s
 <div class="card-item">
   <div class="card-item__side -front">
     <div class="card-item__focus"></div>
-    <div class="card-item__cover">
+    <div aria-label="" class="card-item__cover">
       <!---->
     </div>
     <div class="card-item__wrapper">
@@ -66,7 +66,7 @@ exports[`When I create the VuePaycard component should match default component s
     </div>
   </div>
   <div class="card-item__side -back">
-    <div class="card-item__cover">
+    <div aria-label="" class="card-item__cover">
       <!---->
     </div>
     <div class="card-item__band"></div>

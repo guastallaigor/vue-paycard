@@ -1,5 +1,7 @@
-import { mount } from '@vue/test-utils'
+import { mount, enableAutoDestroy } from '@vue/test-utils'
 import VuePaycard from '../../src/components/VuePaycard'
+
+enableAutoDestroy(afterEach)
 
 describe('When I create the VuePaycard component', () => {
   const transitionStub = () => ({
@@ -267,6 +269,67 @@ describe('When I create the VuePaycard component', () => {
     expect(fields).toMatchObject({})
     wrapper.destroy()
     expect(wrapper.exists()).toBeFalsy()
+  })
+
+  it('should check for each card type/brand', async () => {
+    // *  this test needs improvement since require is not working properly, so it's checking the alt property
+    let valueFields = { cardName: '', cardNumber: '4111 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    let wrapper = createPaycard({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    let img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('visa')
+    valueFields = { cardName: '', cardNumber: '3437 516165 16516', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('amex')
+    valueFields = { cardName: '', cardNumber: '5151 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('mastercard')
+    valueFields = { cardName: '', cardNumber: '6011 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('discover')
+    valueFields = { cardName: '', cardNumber: '6211 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('unionpay')
+    valueFields = { cardName: '', cardNumber: '9792 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('troy')
+    valueFields = { cardName: '', cardNumber: '3051 111111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('dinersclub')
+    valueFields = { cardName: '', cardNumber: '3528 9151 6515 6156', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('jcb')
+    valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.exists()).toBeFalsy()
+  })
+
+  it('should check for background covers from assets', () => {
+    // *  this test needs improvement since require is not working properly, so it's checking the aria-label property
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = createPaycard({ valueFields, backgroundImage: 1, hasRandomBackgrounds: false })
+    expect(wrapper.exists()).toBeTruthy()
+    const covers = wrapper.findAll('.card-item__cover')
+    expect(covers.at(0).exists()).toBeTruthy()
+    expect(covers.at(0).attributes()['aria-label']).toBe('Image cover')
+    expect(covers.at(1).exists()).toBeTruthy()
+    expect(covers.at(1).attributes()['aria-label']).toBe('Image cover')
   })
 
   it('should match default component snapshot', () => {

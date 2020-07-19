@@ -11,7 +11,7 @@
         class="card-item__focus"
         ref="focusElement"
       ></div>
-      <div class="card-item__cover">
+      <div class="card-item__cover" :aria-label="imageCover">
         <img
           v-if="currentCardBackground"
           :src="currentCardBackground"
@@ -28,7 +28,7 @@
                 v-if="cardType"
                 :src="getCreditCardImage"
                 :key="cardType"
-                alt="Card brand image"
+                :alt="`${cardType} brand image`"
                 class="card-item__typeImg"
               />
             </transition>
@@ -130,7 +130,7 @@
       </div>
     </div>
     <div class="card-item__side -back">
-      <div class="card-item__cover">
+      <div class="card-item__cover" :aria-label="imageCover">
         <img
           v-if="currentCardBackground"
           :src="currentCardBackground"
@@ -236,7 +236,6 @@ export default {
     cardType () {
       const number = this.valueFields.cardNumber
       let re = new RegExp('^4')
-
       if (number.match(re)) return 'visa'
 
       re = new RegExp('^(34|37)')
@@ -262,10 +261,20 @@ export default {
 
       return ''
     },
+    imageCover () {
+      return !this.hasRandomBackgrounds && parseInt(this.backgroundImage)
+        ? 'Image cover'
+        : ''
+    },
+    isBackgroundImageFromAssets() {
+      const numberImage = parseInt(this.backgroundImage)
+
+      return Number.isFinite(numberImage) && parseInt(numberImage) < 26 && parseInt(numberImage) > 0
+    },
     currentCardBackground () {
       const numberImage = parseInt(this.backgroundImage)
 
-      if (Number.isFinite(numberImage) && parseInt(numberImage) < 26 && parseInt(numberImage) > 0) {
+      if (this.isBackgroundImageFromAssets) {
         return require(`../assets/images/${numberImage}.jpg`)
       }
 
