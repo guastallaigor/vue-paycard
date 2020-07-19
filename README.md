@@ -127,14 +127,14 @@ plugins: [
 
 ## Props
 
-| Property name         |   Type           |  Default  | Description |
-| --------------------- | ---------------- | --------- | ----------- |
-| value-fields          | Object           |   null    | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)) |
-| input-fields          | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' } | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
-| labels                | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
-| is-card-number-masked | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
-| random-backgrounds    | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
-| background-image      | [String, Number] | ''        | Set a background image link to the card (overrides `random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
+| Property name          |   Type           |  Default  | Description |
+| ---------------------- | ---------------- | --------- | ----------- |
+| value-fields*          | Object           |   null    | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)). The `cardNumber` attribute value **must** be stored as it's shown: **#### #### #### ####**. The `cardYear` attribute value **must** be stored as **YYYY**   |
+| input-fields           | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' }  | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
+| labels                 | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires', cardCvv: 'CVV' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
+| is-card-number-masked  | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
+| has-random-backgrounds | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
+| background-image       | [String, Number] | ''        | Set a background image link to the card (overrides `random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
 
 ## Development
 
@@ -182,7 +182,7 @@ You can commit using `yarn commit` to help you with that
 
 There's a `pre-push` hook that runs all the unit tests before you can push it
 
-If an error occurs, you can use the `yarn commit:retry` command that runs the previous `npm run commit` that you already filled
+If an error occurs, you can use the `yarn commit:retry` command that runs the previous `yarn commit` that you already filled
 
 <a href="https://www.buymeacoffee.com/guastallaigor" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 

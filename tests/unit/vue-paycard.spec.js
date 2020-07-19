@@ -1,311 +1,264 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import VuePaycard from '../../src/components/VuePaycard'
 
 describe('When I create the VuePaycard component', () => {
-  const createTimelineWrapper = (propsData = {}, slot = '') => {
-    return shallowMount(VuePaycard, {
+  const transitionStub = () => ({
+    render: function(h) {
+      return this.$options._renderChildren
+    }
+  })
+  const createPaycard = (propsData = {}, slot = '') => {
+    return mount(VuePaycard, {
       propsData,
+      stubs: {
+        transition: false
+      },
       slots: {
         default: slot
       }
     })
   }
-  const valueFields = {
-    cardName: '',
-    cardNumber: '',
-    cardMonth: '',
-    cardYear: '',
-    cardCvv: ''
-  }
 
-  it('should be a Vue instance', () => {
-    const wrapper = createTimelineWrapper({ valueFields })
-    expect(wrapper.findComponent(VuePaycard).isVueInstance()).toBe(true)
+  it('should be able to mask numbers if the isCardNumberMasked prop is true', () => {
+    // * for now, only the last four digits will be shown
+    const valueFields = { cardName: '', cardNumber: '9999 9999 9999 9999', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = createPaycard({ valueFields, isCardNumberMasked: true })
+    const elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    const numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(19)
+    const maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(12)
+    const unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(4)
+    const spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(3)
   })
 
-  // it('should add a text-center class inside the title if titleCentered prop is added', () => {
-  //   const wrapper = createTimelineWrapper({ items, titleCentered: true })
-  //   const timelineClasses = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span').classes()
-  //   expect(timelineClasses.length).toBe(2)
-  //   expect(timelineClasses).toContainEqual('text-center')
-  // })
+  it('should be able to show all the numbers if the isCardNumberMasked prop is false', () => {
+    const valueFields = { cardName: '', cardNumber: '9999 9999 9999 9999', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = createPaycard({ valueFields, isCardNumberMasked: false })
+    const elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    const numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(19)
+    const maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    const unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(16)
+    const spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(3)
+  })
 
-  // it('should emit a click event when clicked on any timeline card', () => {
-  //   const wrapper = createTimelineWrapper({ items })
+  it('should be able to set a background-image with a link', async () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const payload = { valueFields }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    const image = 'https://ik.imagekit.io/6xhf1gnexgdgk/lion_BllLvaqVn.jpg'
+    await wrapper.setProps({ backgroundImage: image })
+    const cover = wrapper.findAll('.card-item__cover')
+    expect(cover.exists()).toBe(true)
+    const bg = wrapper.find('.card-item__bg')
+    expect(bg.exists()).toBe(true)
+    expect(bg.attributes().src).toBe(image)
+  })
 
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time')
-  //   time.trigger('click')
-  //   time.trigger('click')
-  //   time.trigger('click')
+  it('should be able to remove the random background images', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const payload = { valueFields, hasRandomBackgrounds: false, backgroundImage: '' }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    const cover = wrapper.findAll('.card-item__cover')
+    expect(cover.exists()).toBe(true)
+    const bg = wrapper.find('.card-item__bg')
+    expect(bg.exists()).toBe(false)
+  })
 
-  //   expect(wrapper.emitted('click')).toBeTruthy()
-  //   expect(wrapper.emitted('click').length).toBe(3)
-  // })
+  it('should be able to change all the labels', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const labels = { cardName: 'A', cardHolder: 'B', cardMonth: 'XX', cardYear: 'WW', cardExpires: 'C', cardCvv: 'V' }
+    const payload = { valueFields, labels }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    const name = wrapper.find('.card-item__name')
+    expect(name.exists()).toBe(true)
+    expect(name.text()).toBe('A')
+    const holder = wrapper.find('.card-item__holder')
+    expect(holder.exists()).toBe(true)
+    expect(holder.text()).toBe('B')
+    const expires = wrapper.find('.card-item__dateTitle')
+    expect(expires.exists()).toBe(true)
+    expect(expires.text()).toBe('C')
+    const month = wrapper.find('[for=v-card-month] > span')
+    expect(month.exists()).toBe(true)
+    expect(month.text()).toBe('XX')
+    const year = wrapper.find('[for=v-card-year] > span')
+    expect(year.exists()).toBe(true)
+    expect(year.text()).toBe('WW')
+    const cvv = wrapper.find('.card-item__cvvTitle')
+    expect(cvv.exists()).toBe(true)
+    expect(cvv.text()).toBe('V')
+  })
 
-  // it('should print html inside slot', () => {
-  //   const html = '<p id="find-this-id">VuePaycard</p>'
-  //   const wrapper = createTimelineWrapper({ items }, html)
-  //   const slot = wrapper.find('p#find-this-id')
+  it('should be able to change all the input field ids', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const inputFields = { cardName: 'a-1', cardNumber: 'a-2', cardMonth: 'a-3', cardYear: 'a-4', cardCvv: 'a-5' }
+    const payload = { valueFields, inputFields }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    const name = wrapper.find('[for=a-1]')
+    expect(name.exists()).toBe(true)
+    expect(name.text()).toContain('Card Holder')
+    const number = wrapper.find('[for=a-2]')
+    expect(number.exists()).toBe(true)
+    expect(number.text()).toContain('#')
+    const month = wrapper.findAll('[for=a-3]')
+    expect(month.length).toBe(2)
+    expect(month.at(0).exists()).toBe(true)
+    expect(month.at(0).text()).toBe('Expires')
+    expect(month.at(1).exists()).toBe(true)
+    expect(month.at(1).text()).toBe('MM')
+    const year = wrapper.find('[for=a-4]')
+    expect(year.exists()).toBe(true)
+    expect(year.text()).toBe('YY')
+    const cvv = wrapper.find('[for=a-5]')
+    expect(cvv.exists()).toBe(true)
+    expect(cvv.text()).toContain('CVV')
+  })
 
-  //   expect(wrapper.exists()).toBe(true)
-  //   expect(slot.exists()).toBe(true)
-  //   expect(slot.html()).toBe(html)
-  // })
+  it('should be able to set all the value fields', async () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const payload = { valueFields }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    const valueFieldsAfter = { cardName: 'qwerty', cardNumber: '9999 9999 9999 9999', cardMonth: '01', cardYear: '2021', cardCvv: 'ASD' }
+    await wrapper.setProps({ valueFields: valueFieldsAfter, isCardNumberMasked: false })
+    // * card number
+    const elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    const numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(19)
+    const maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    const unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(16)
+    const spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(3)
+    // * card name
+    const elementsNamedItem = wrapper.findAll('.card-item__nameItem')
+    expect(elementsNamedItem.exists()).toBe(true)
+    const elementsNamedItemText = elementsNamedItem.wrappers.map(it => it.text())
+    expect(elementsNamedItemText.length).toBe(6)
+    // * card month
+    const monthValue = wrapper.find('[for=v-card-month] > span')
+    expect(monthValue.exists()).toBe(true)
+    expect(monthValue.text()).toBe('01')
+    // * card year
+    const yearValue = wrapper.find('[for=v-card-year] > span')
+    expect(yearValue.exists()).toBe(true)
+    expect(yearValue.text()).toBe('21')
+    // * card cvv
+    const cvvValue = wrapper.find('.card-item__cvvBand > span')
+    expect(cvvValue.exists()).toBe(true)
+    expect(cvvValue.text()).toBe('ASD')
+    // * labels
+    const name = wrapper.find('[for=v-card-name]')
+    expect(name.exists()).toBe(true)
+    expect(name.text()).toContain('Card Holder')
+    const number = wrapper.find('[for=v-card-number]')
+    expect(number.exists()).toBe(true)
+    expect(number.text()).toContain('#')
+    const month = wrapper.findAll('[for=v-card-month]')
+    expect(month.length).toBe(2)
+    expect(month.at(0).exists()).toBe(true)
+    expect(month.at(0).text()).toBe('Expires')
+    expect(month.at(1).exists()).toBe(true)
+    expect(month.at(1).text()).toContain('01')
+    const year = wrapper.find('[for=v-card-year]')
+    expect(year.exists()).toBe(true)
+    expect(year.text()).toContain('YY')
+    const cvv = wrapper.find('[for=v-card-cvv]')
+    expect(cvv.exists()).toBe(true)
+    expect(cvv.text()).toContain('CVV')
+  })
 
-  // it('should disable event click when clickable prop is false', () => {
-  //   const wrapper = createTimelineWrapper({ items, clickable: false })
+  it('should be able to change the cards placeholder', async () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const payload = { valueFields, isCardNumberMasked: true }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    // * card number masked
+    let elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    let numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(19)
+    let maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    let hashNumbers = numbers.filter(it => it === '#')
+    expect(hashNumbers.length).toBe(16)
+    let unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(0)
+    let spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(3)
+    const valueFieldsAfter = { cardName: 'qwerty', cardNumber: '3437 651651 59999', cardMonth: '01', cardYear: '2021', cardCvv: 'ASD' }
+    await wrapper.setProps({ valueFields: valueFieldsAfter, isCardNumberMasked: false })
+    // * card number
+    elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(17)
+    maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    hashNumbers = numbers.filter(it => it === '#')
+    expect(hashNumbers.length).toBe(0)
+    unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(4)
+    spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(2)
+  })
 
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time')
-  //   time.trigger('click')
-  //   time.trigger('click')
-  //   time.trigger('click')
-
-  //   expect(wrapper.emitted('click')).toBeFalsy()
-  // })
-
-  // it('should change the color of the line inside the timeline to black when the prop lineColor is set to black', () => {
-  //   const wrapper = createTimelineWrapper({ items, lineColor: 'black' })
-
-  //   const lis = wrapper.findAll('.vue-horizontal-timeline>section.timeline>ol>li')
-  //   const li1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child')
-  //   const li2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)')
-  //   const li3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)')
-
-  //   // one more is created empty
-  //   expect(lis.length).toBe(4)
-  //   expect(li1.attributes().style).toBe('background: black;')
-  //   expect(li2.attributes().style).toBe('background: black;')
-  //   expect(li3.attributes().style).toBe('background: black;')
-  //   expect(wrapper.props().lineColor).toBe('black')
-  //   expect(wrapper.vm.setLineColor).toBe('background: black')
-  // })
-
-  // it('should remove the lineColor', () => {
-  //   const wrapper = createTimelineWrapper({ items, lineColor: '' })
-
-  //   const lis = wrapper.findAll('.vue-horizontal-timeline>section.timeline>ol>li')
-  //   const li1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child')
-  //   const li2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)')
-  //   const li3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)')
-
-  //   // one more is created empty
-  //   expect(lis.length).toBe(4)
-  //   expect(li1.attributes().style).toBe(undefined)
-  //   expect(li2.attributes().style).toBe(undefined)
-  //   expect(li3.attributes().style).toBe(undefined)
-  //   expect(wrapper.props().lineColor).toBe('')
-  //   expect(wrapper.vm.setLineColor).toBe('')
-  // })
-
-  // it('should change the background color of the timeline to black when the prop timelineBackground is set to black', () => {
-  //   const wrapper = createTimelineWrapper({ items, timelineBackground: 'black' })
-
-  //   const timeline = wrapper.find('.vue-horizontal-timeline')
-
-  //   expect(timeline.exists()).toBe(true)
-  //   expect(timeline.attributes().style).toBe('background: black;')
-  // })
-
-  // it('should change the padding of the timeline to 15em when the prop timelinePadding is set to 15em', () => {
-  //   const wrapper = createTimelineWrapper({ items, timelinePadding: '15em' })
-
-  //   const timeline = wrapper.find('.vue-horizontal-timeline')
-
-  //   expect(timeline.exists()).toBe(true)
-  //   expect(timeline.attributes().style).toBe('padding: 15em;')
-  // })
-
-  // it('should change the min-height of the timeline to 900px when the prop minHeight is set to 900px', () => {
-  //   const wrapper = createTimelineWrapper({ items, minHeight: '900px' })
-
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time')
-
-  //   expect(time.exists()).toBe(true)
-  //   // min-width 200px by default
-  //   expect(time.attributes().style).toBe('min-width: 200px; min-height: 900px;')
-  // })
-
-  // it('should change the min-width of the timeline to 500px when the prop minWidth is set to 500px', () => {
-  //   const wrapper = createTimelineWrapper({ items, minWidth: '500px' })
-
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time')
-
-  //   expect(time.exists()).toBe(true)
-  //   expect(time.attributes().style).toBe('min-width: 500px;')
-  // })
-
-  // it('should wrap the content when it has above 50 characters and the contentSubstr prop is set to 50', () => {
-  //   const wrapper = createTimelineWrapper({ items, contentSubstr: 50 })
-  //   const html = `<span class="content">
-  //           Lorem ipsum dolor sit amet, consectetur adipiscing...
-  //         </span>`
-
-  //   const content1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.content')
-  //   const content2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.content')
-  //   const content3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.content')
-
-  //   expect(content1.exists()).toBe(true)
-  //   expect(content2.exists()).toBe(true)
-  //   expect(content3.exists()).toBe(true)
-  //   expect(content1.html()).toBe(html)
-  //   expect(content2.html()).toBe(html)
-  //   expect(content3.html()).toBe(html)
-  // })
-
-  // it('should add a custom-class to the cards content when contentClass prop is set to custom-class', () => {
-  //   const wrapper = createTimelineWrapper({ items, contentClass: 'custom-class' })
-
-  //   const content1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.content')
-  //   const content2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.content')
-  //   const content3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.content')
-  //   const arr = [content1, content2, content3]
-
-  //   for (var i = 0; i < 3; i++) {
-  //     expect(arr[i].exists()).toBe(true)
-  //     expect(arr[i].classes().length).toBe(2)
-  //     expect(arr[i].classes()).toContainEqual('custom-class')
-  //   }
-  // })
-
-  // it('should add text-center class to all cards content when contentCentered prop is set to true', () => {
-  //   const wrapper = createTimelineWrapper({ items, contentCentered: true })
-
-  //   const content1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.content')
-  //   const content2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.content')
-  //   const content3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.content')
-  //   const arr = [content1, content2, content3]
-
-  //   for (var i = 0; i < 3; i++) {
-  //     expect(arr[i].exists()).toBe(true)
-  //     expect(arr[i].classes().length).toBe(2)
-  //     expect(arr[i].classes()).toContainEqual('text-center')
-  //   }
-  // })
-
-  // it('should change the content attribute key that is being used from content to test if contentAttr prop is set to test', () => {
-  //   const anotherValue = {
-  //     title: 'Title example 1',
-  //     test: 'Lorem ipsum dolor sit amet'
-  //   }
-  //   const anotherItems = [anotherValue]
-  //   const wrapper = createTimelineWrapper({ items: anotherItems, contentAttr: 'test' })
-  //   const content1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.content')
-  //   expect(content1.exists()).toBe(true)
-  //   expect(content1.html()).toBe(`<span class="content">
-  //           Lorem ipsum dolor sit amet
-  //         </span>`)
-  // })
-
-  // it('should wrap the title when it has above 50 characters and the titleSubstr prop is set to 50', () => {
-  //   const wrapper = createTimelineWrapper({ items, titleSubstr: 50 })
-  //   const html1 = `<span class="title">
-  //           Title example 1
-  //         </span>`
-  //   const html2 = `<span class="title">
-  //           Title example 2
-  //         </span>`
-  //   const html3 = `<span class="title">
-  //           Title example 3
-  //         </span>`
-
-  //   const title1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.title')
-  //   const title2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.title')
-  //   const title3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.title')
-
-  //   expect(title1.exists()).toBe(true)
-  //   expect(title2.exists()).toBe(true)
-  //   expect(title3.exists()).toBe(true)
-  //   expect(title1.html()).toBe(html1)
-  //   expect(title2.html()).toBe(html2)
-  //   expect(title3.html()).toBe(html3)
-  // })
-
-  // it('should add a custom-class to the cards title when titleClass prop is set to custom-class', () => {
-  //   const wrapper = createTimelineWrapper({ items, titleClass: 'custom-class' })
-
-  //   const title1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.title')
-  //   const title2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.title')
-  //   const title3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.title')
-  //   const arr = [title1, title2, title3]
-
-  //   for (var i = 0; i < 3; i++) {
-  //     expect(arr[i].exists()).toBe(true)
-  //     expect(arr[i].classes().length).toBe(2)
-  //     expect(arr[i].classes()).toContainEqual('custom-class')
-  //   }
-  // })
-
-  // it('should add text-center class to all cards title when titleCentered prop is set to true', () => {
-  //   const wrapper = createTimelineWrapper({ items, titleCentered: true })
-
-  //   const title1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.title')
-  //   const title2 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(2)>.time>span.title')
-  //   const title3 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:nth-child(3)>.time>span.title')
-  //   const arr = [title1, title2, title3]
-
-  //   for (var i = 0; i < 3; i++) {
-  //     expect(arr[i].exists()).toBe(true)
-  //     expect(arr[i].classes().length).toBe(2)
-  //     expect(arr[i].classes()).toContainEqual('text-center')
-  //   }
-  // })
-
-  // it('should change the title attribute key that is being used from title to test if titleAttr prop is set to test', () => {
-  //   const anotherValue = {
-  //     test: 'Title example 1',
-  //     content: 'Content'
-  //   }
-  //   const anotherItems = [anotherValue]
-  //   const wrapper = createTimelineWrapper({ items: anotherItems, titleAttr: 'test' })
-  //   const title1 = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time>span.title')
-  //   expect(title1.exists()).toBe(true)
-  //   expect(title1.html()).toBe(`<span class="title">
-  //           Title example 1
-  //         </span>`)
-  // })
-
-  // it('should have a two way data bind when itemSelected is passed and a card is clicked', () => {
-  //   const itemSelected = {
-  //     title: '',
-  //     content: ''
-  //   }
-  //   const wrapper = createTimelineWrapper({ items, itemSelected })
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time')
-  //   time.trigger('click')
-  //   const expected = {
-  //     title: 'Title example 1',
-  //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse tempor rutrum eros, non pellentesque odio commodo eu. Donec at volutpat enim. Vivamus mattis volutpat urna, sit amet vulputate mauris sollicitudin et. Proin consequat at dolor in sodales. Vestibulum vel porta turpis. Pellentesque sollicitudin justo est, ut dapibus felis luctus mollis. Suspendisse feugiat, metus ut auctor dictum, nulla dui fringilla nisl, a pulvinar ipsum justo non lacus. Integer vestibulum sapien metus, et congue felis efficitur iaculis. Aliquam et mi quis nulla molestie elementum. Vestibulum in nibh nibh.'
-  //   }
-  //   expect(time.exists()).toBe(true)
-  //   expect(wrapper.emitted('click')).toBeTruthy()
-  //   expect(wrapper.emitted('click')).toMatchObject([[expected]])
-  // })
-
-  // it('should have a blue border when itemUniqueKey and itemSelected is passed and a card is clicked', (done) => {
-  //   const itemSelected = items[0]
-  //   const wrapper = createTimelineWrapper({ items, itemSelected, itemUniqueKey: 'title', clickable: true })
-  //   const time = wrapper.find('.vue-horizontal-timeline>section.timeline>ol>li:first-child>.time:first-child')
-  //   time.trigger('click')
-  //   const expected = {
-  //     title: 'Title example 1',
-  //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ex dolor, malesuada luctus scelerisque ac, auctor vitae risus. Vivamus risus dolor, faucibus a bibendum quis, facilisis eget odio. Nullam non condimentum orci, a cursus magna. Suspendisse tempor rutrum eros, non pellentesque odio commodo eu. Donec at volutpat enim. Vivamus mattis volutpat urna, sit amet vulputate mauris sollicitudin et. Proin consequat at dolor in sodales. Vestibulum vel porta turpis. Pellentesque sollicitudin justo est, ut dapibus felis luctus mollis. Suspendisse feugiat, metus ut auctor dictum, nulla dui fringilla nisl, a pulvinar ipsum justo non lacus. Integer vestibulum sapien metus, et congue felis efficitur iaculis. Aliquam et mi quis nulla molestie elementum. Vestibulum in nibh nibh.'
-  //   }
-  //   expect(time.exists()).toBe(true)
-  //   expect(wrapper.emitted('click')).toBeTruthy()
-  //   expect(wrapper.emitted('click')).toEqual([[expected]])
-  //   setTimeout(() => {
-  //     expect(time.classes().length).toBe(2)
-  //     expect(time.classes()).toContainEqual('border-blue')
-  //     done()
-  //   })
-  // })
+  it('should be able to change the cards placeholder', async () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const payload = { valueFields, isCardNumberMasked: true }
+    const wrapper = createPaycard({ ...payload })
+    expect(wrapper.exists()).toBeTruthy()
+    // * card number masked
+    let elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    let numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(19)
+    let maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    let hashNumbers = numbers.filter(it => it === '#')
+    expect(hashNumbers.length).toBe(16)
+    let unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(0)
+    let spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(3)
+    const valueFieldsAfter = { cardName: 'qwerty', cardNumber: '3437 651651 59999', cardMonth: '01', cardYear: '2021', cardCvv: 'ASD' }
+    await wrapper.setProps({ valueFields: valueFieldsAfter, isCardNumberMasked: false })
+    // * card number
+    elements = wrapper.findAll('.card-item__numberItem')
+    expect(elements.exists()).toBe(true)
+    numbers = elements.wrappers.map(it => it.text())
+    expect(numbers.length).toBe(17)
+    maskedNumbers = numbers.filter(it => it === '*')
+    expect(maskedNumbers.length).toBe(0)
+    hashNumbers = numbers.filter(it => it === '#')
+    expect(hashNumbers.length).toBe(0)
+    unmaskedNumbers = numbers.filter(it => it === '9')
+    expect(unmaskedNumbers.length).toBe(4)
+    spaces = numbers.filter(it => it === '')
+    expect(spaces.length).toBe(2)
+  })
 
   // it('should match snapshot', () => {
   //   const itemSelected = {
   //     title: 'title',
   //     content: 'content'
   //   }
-  //   const wrapper = createTimelineWrapper({
+  //   const wrapper = createPaycard({
   //     items,
   //     itemSelected,
   //     itemUniqueKey: 'title',

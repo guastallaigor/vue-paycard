@@ -130,14 +130,14 @@ export const DefaultComponent = () => ({
       default: object('Value fields', {
         cardName: '',
         cardNumber: '',
-        cardMonth: '',
-        cardYear: '',
-        cardCvv: ''
+        cardMonth: null,
+        cardYear: null,
+        cardCvv: null
       })
     },
     inputFields: {
       type: Object,
-      default: object('Input fields ids', {
+      default: object('Input field ids', {
         cardNumber: 'v-card-number',
         cardName: 'v-card-name',
         cardMonth: 'v-card-month',
@@ -152,14 +152,15 @@ export const DefaultComponent = () => ({
         cardHolder: 'Card Holder',
         cardMonth: 'MM',
         cardYear: 'YY',
-        cardExpires: 'Expires'
+        cardExpires: 'Expires',
+        cardCvv: 'CVV'
       })
     },
     isCardNumberMasked: {
       type: Boolean,
       default: boolean('Is credit card number masked', true)
     },
-    randomBackgrounds: {
+    hasRandomBackgrounds: {
       type: Boolean,
       default: boolean('Random backgrounds', true)
     },
@@ -176,7 +177,7 @@ export const DefaultComponent = () => ({
         :valueFields="valueFields"
         :labels="labels"
         :isCardNumberMasked="isCardNumberMasked"
-        :randomBackgrounds="randomBackgrounds"
+        :hasRandomBackgrounds="hasRandomBackgrounds"
         :backgroundImage="backgroundImage"
       />
       <div class="card-form__inner">
@@ -211,7 +212,7 @@ export const DefaultComponent = () => ({
         <div class="card-form__row">
           <div class="card-form__col">
             <div class="card-form__group">
-              <label for="cardMonth" class="card-input__label" aria-label="Expiration Date">Expiration Date (Month / Year)</label>
+              <label for="cardMonth" class="card-input__label" aria-label="Expiration Date">Expiration Date</label>
               <select
                 class="card-input__input -select"
                 :id="inputFields.cardMonth"

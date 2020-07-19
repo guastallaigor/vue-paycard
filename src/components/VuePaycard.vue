@@ -140,10 +140,12 @@
       </div>
       <div class="card-item__band"></div>
       <div class="card-item__cvv">
-        <div class="card-item__cvvTitle">CVV</div>
-        <div class="card-item__cvvBand">
-          <span>{{ valueFields.cardCvv }}</span>
-        </div>
+        <label :for="inputFields.cardCvv" aria-label="Card CVV">
+          <div class="card-item__cvvTitle">{{ labels.cardCvv }}</div>
+          <div class="card-item__cvvBand">
+            <span>{{ valueFields.cardCvv }}</span>
+          </div>
+        </label>
         <div class="card-item__type">
           <img
             v-if="cardType"
@@ -182,14 +184,15 @@ export default {
         cardHolder: 'Card Holder',
         cardMonth: 'MM',
         cardYear: 'YY',
-        cardExpires: 'Expires'
+        cardExpires: 'Expires',
+        cardCvv: 'CVV'
       })
     },
     isCardNumberMasked: {
       type: Boolean,
       default: true
     },
-    randomBackgrounds: {
+    hasRandomBackgrounds: {
       type: Boolean,
       default: true
     },
@@ -270,7 +273,7 @@ export default {
         return this.backgroundImage
       }
 
-      if (this.randomBackgrounds) {
+      if (this.hasRandomBackgrounds) {
         const random = Math.floor(Math.random() * 25 + 1)
 
         return require(`../assets/images/${random}.jpg`)
@@ -321,8 +324,10 @@ export default {
         : null
     },
     getIsNumberMasked (index, n) {
+      const numbers = this.cardType === 'amex' ? 13 : 14
+
       return (
-        index < 14 &&
+        index < numbers &&
         this.valueFields.cardNumber.length > index &&
         n.trim() !== '' &&
         this.isCardNumberMasked
