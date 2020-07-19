@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`When I create the VuePaycard component should match default component snapshot 1`] = `
+<div class="card-item">
+  <div class="card-item__side -front">
+    <div class="card-item__focus"></div>
+    <div class="card-item__cover">
+      <!---->
+    </div>
+    <div class="card-item__wrapper">
+      <div class="card-item__top"><img src="../assets/images/chip.png" alt="Card chip image" class="card-item__chip">
+        <div class="card-item__type">
+          <!---->
+        </div>
+      </div> <label for="v-card-number" aria-label="Card number" class="card-item__number"><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+                 
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+                 
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+                 
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+                #
+              </div></span></label>
+      <div class="card-item__content"><label for="v-card-name" aria-label="Card name" class="card-item__info">
+          <div class="card-item__holder">
+            Card Holder
+          </div>
+          <div class="card-item__name" name="slide-fade-up">
+            Full Name
+          </div>
+        </label>
+        <div class="card-item__date"><label for="v-card-month" aria-label="Expiration date" class="card-item__dateTitle">Expires</label> <label for="v-card-month" aria-label="Card month" class="card-item__dateItem"><span name="slide-fade-up">MM</span></label>
+          /
+          <label for="v-card-year" aria-label="Card year" class="card-item__dateItem"><span name="slide-fade-up">YY</span></label></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-item__side -back">
+    <div class="card-item__cover">
+      <!---->
+    </div>
+    <div class="card-item__band"></div>
+    <div class="card-item__cvv"><label for="v-card-cvv" aria-label="Card CVV">
+        <div class="card-item__cvvTitle">CVV</div>
+        <div class="card-item__cvvBand"><span></span></div>
+      </label>
+      <div class="card-item__type">
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;

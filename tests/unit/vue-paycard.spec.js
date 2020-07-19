@@ -11,7 +11,7 @@ describe('When I create the VuePaycard component', () => {
     return mount(VuePaycard, {
       propsData,
       stubs: {
-        transition: false
+        transition: transitionStub()
       },
       slots: {
         default: slot
@@ -168,7 +168,7 @@ describe('When I create the VuePaycard component', () => {
     expect(name.text()).toContain('Card Holder')
     const number = wrapper.find('[for=v-card-number]')
     expect(number.exists()).toBe(true)
-    expect(number.text()).toContain('#')
+    expect(number.text()).toContain('9')
     const month = wrapper.findAll('[for=v-card-month]')
     expect(month.length).toBe(2)
     expect(month.at(0).exists()).toBe(true)
@@ -177,7 +177,7 @@ describe('When I create the VuePaycard component', () => {
     expect(month.at(1).text()).toContain('01')
     const year = wrapper.find('[for=v-card-year]')
     expect(year.exists()).toBe(true)
-    expect(year.text()).toContain('YY')
+    expect(year.text()).toContain('21')
     const cvv = wrapper.find('[for=v-card-cvv]')
     expect(cvv.exists()).toBe(true)
     expect(cvv.text()).toContain('CVV')
@@ -223,7 +223,7 @@ describe('When I create the VuePaycard component', () => {
     const payload = { valueFields, isCardNumberMasked: true }
     const wrapper = createPaycard({ ...payload })
     expect(wrapper.exists()).toBeTruthy()
-    // * card number masked
+    // * card number masked with empty values
     let elements = wrapper.findAll('.card-item__numberItem')
     expect(elements.exists()).toBe(true)
     let numbers = elements.wrappers.map(it => it.text())
@@ -238,7 +238,7 @@ describe('When I create the VuePaycard component', () => {
     expect(spaces.length).toBe(3)
     const valueFieldsAfter = { cardName: 'qwerty', cardNumber: '3437 651651 59999', cardMonth: '01', cardYear: '2021', cardCvv: 'ASD' }
     await wrapper.setProps({ valueFields: valueFieldsAfter, isCardNumberMasked: false })
-    // * card number
+    // * card number unmasked with values
     elements = wrapper.findAll('.card-item__numberItem')
     expect(elements.exists()).toBe(true)
     numbers = elements.wrappers.map(it => it.text())
@@ -253,31 +253,9 @@ describe('When I create the VuePaycard component', () => {
     expect(spaces.length).toBe(2)
   })
 
-  // it('should match snapshot', () => {
-  //   const itemSelected = {
-  //     title: 'title',
-  //     content: 'content'
-  //   }
-  //   const wrapper = createPaycard({
-  //     items,
-  //     itemSelected,
-  //     itemUniqueKey: 'title',
-  //     titleAttr: 'title',
-  //     titleCentered: false,
-  //     titleClass: '',
-  //     titleSubstr: 18,
-  //     contentAttr: 'content',
-  //     contentCentered: false,
-  //     contentClass: '',
-  //     contentSubstr: 250,
-  //     minWidth: '200px',
-  //     minHeight: '',
-  //     timelinePadding: '',
-  //     timelineBackground: '',
-  //     lineColor: '#03A9F4',
-  //     clickable: true
-  //   })
-
-  //   expect(wrapper.html()).toMatchSnapshot()
-  // })
+  it('should match default component snapshot', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = createPaycard({ valueFields })
+    expect(wrapper.html()).toMatchSnapshot()
+  })
 })
