@@ -14,7 +14,7 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
 [![Dependencies](https://img.shields.io/david/guastallaigor/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/)
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a87b7690-b534-4c67-b4a6-60e586bd79b5/deploy-status)](https://app.netlify.com/sites/vue-paycard/deploys)
 
 > This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it </br></br>
 > This project only exports the Card component, **you** will need to create your own form
@@ -41,7 +41,7 @@ So this project is the Card component from there, but with some differences:
 
 ## Storybook
 
-Go to https://vue-paycard.netlify.com
+Go to https://vue-paycard.netlify.app
 
 > **Note**: The form inside is just an example, **you** will need to create yours or copy it from `src/stories/index.stories.js`
 
@@ -188,4 +188,4 @@ If an error occurs, you can use the `yarn commit:retry` command that runs the pr
 
 ## License
 
-[MIT](https://github.com/guastallaigor/vue-paycard/blob/master/LICENSE) ©
+[MIT](https://github.com/guastallaigor/vue-paycard/blob/master/LICENSE) © 2020
