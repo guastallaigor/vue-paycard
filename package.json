@@ -92,7 +92,8 @@
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": ["/node_modules/", "/form.vue/", "/src/assets/"]
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

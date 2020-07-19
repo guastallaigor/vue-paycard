@@ -14,7 +14,7 @@ addDecorator(withA11y)
 export default {
   title: 'VuePaycard',
   component: VuePaycard
-};
+}
 
 export const DefaultComponent = () => ({
   components: { VuePaycard },
@@ -22,7 +22,7 @@ export const DefaultComponent = () => ({
     'number-only': {
       bind (el) {
         function checkValue (event) {
-          event.target.value = event.target.value.replace(/[^0-9]/g, '');
+          event.target.value = event.target.value.replace(/[^0-9]/g, '')
           if (event.charCode >= 48 && event.charCode <= 57) {
             return true
           }
@@ -57,7 +57,7 @@ export const DefaultComponent = () => ({
   watch: {
     cardYear () {
       if (this.valueFields.cardMonth < this.minCardMonth) {
-        this.valueFields.cardMonth = '';
+        this.valueFields.cardMonth = ''
       }
     }
   },
@@ -117,7 +117,7 @@ export const DefaultComponent = () => ({
         if (index > 4 && index < 14 && element.trim() !== '') {
           arr[index] = '*'
         }
-      });
+      })
       this.valueFields.cardNumber = arr.join('')
     },
     unMaskCardNumber () {
@@ -268,8 +268,8 @@ export const DefaultComponent = () => ({
     </div>
   </div>
   `
-});
+})
 
 DefaultComponent.story = {
   name: 'Default'
-};
+}

@@ -1,5 +1,6 @@
 import { mount, enableAutoDestroy } from '@vue/test-utils'
 import VuePaycard from '../../src/components/VuePaycard'
+// import Form from './form.vue'
 
 enableAutoDestroy(afterEach)
 
@@ -377,6 +378,24 @@ describe('When I create the VuePaycard component', () => {
     expect(backgroundImage.default).toBe('')
     console.error = consoleLog
   })
+
+  // ! WIP
+  // it('should add focus and blur listeners to input form fields', async () => {
+    // const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    // const wrapper =  mount(VuePaycard, {
+    //   parentComponent: Form,
+    //   propsData: {
+    //     valueFields
+    //   },
+    //   stubs: {
+    //     transition: transitionStub()
+    //   },
+    //   attachTo: document.body
+    // })
+    // expect(wrapper.vm.$parent.$options.name).toBe('Form')
+    // wrapper.vm.changePlaceholder()
+    // await wrapper.vm.$nextTick()
+  // })
 
   it('should match default component snapshot', () => {
     const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
