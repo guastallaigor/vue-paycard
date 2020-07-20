@@ -80,7 +80,7 @@ export default {
 
 ### Nuxt.js
 
-You can import as a Nuxt.js plugin
+You can create a Nuxt.js plugin `vue-paycard.js`
 
 ```js
 import Vue from 'vue'
