@@ -56,8 +56,8 @@ jobs:
       run: yarn lint
 
     ## Coverage
-    - name: Run coverage
-      run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=./coverage
+    # - name: Run coverage
+    #   run: yarn test:unit --coverage --coverageReporters=json --collectCoverage=true --coverageDirectory=./coverage
 
     # ## Codecov
     # - name: Upload coverage to Codecov
