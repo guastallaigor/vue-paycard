@@ -307,10 +307,11 @@ export default {
         })
         element[event]('blur', () => {
           this.isCardFlipped = !element.id === this.inputFields.cardCvv
-          setTimeout(() => {
+          const timeout = setTimeout(() => {
             if (!self.isFocused) {
               self.currentFocus = null
             }
+            clearTimeout(timeout)
           }, 300)
           self.isFocused = false
         })

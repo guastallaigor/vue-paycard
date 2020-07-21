@@ -1,10 +1,11 @@
-import { mount, enableAutoDestroy } from '@vue/test-utils'
+import { mount, enableAutoDestroy, createLocalVue, shallowMount } from '@vue/test-utils'
 import VuePaycard from '../../src/components/VuePaycard'
-// import Form from './form.vue'
+import Form from './form.vue'
 
 enableAutoDestroy(afterEach)
 
 describe('When I create the VuePaycard component', () => {
+  const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms))
   const transitionStub = () => ({
     render: function(h) {
       return this.$options._renderChildren
@@ -18,6 +19,126 @@ describe('When I create the VuePaycard component', () => {
       }
     })
   }
+  const createDefaultForm = () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const localVue = createLocalVue()
+    const wrapperPaycard = shallowMount(VuePaycard, {
+      propsData: { valueFields },
+      localVue
+    })
+    const div = document.createElement('div')
+    div.id = 'form-test'
+    document.body.appendChild(div)
+    return mount(Form, {
+      AsyncComponent: wrapperPaycard,
+      localVue,
+      propsData: {
+        valueFields
+      },
+      stubs: {
+        transition: transitionStub()
+      },
+      attachTo: div
+    })
+  }
+
+  it('should add focus and blur listeners to card number/name input of the outside form', async () => {
+    const array = ['v-card-number', 'v-card-name']
+    for (let index = 0; index < array.length; index++) {
+      const id = array[index];
+      const wrapperForm = createDefaultForm()
+      const paycardData = wrapperForm.vm.$children[0].$data
+      expect(paycardData.currentFocus).toBeNull()
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      expect(paycardData.focusElementStyle).toBeNull()
+      await timeout(300)
+      wrapperForm.find(`#${id}`).trigger('focus')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.focusElementStyle).toBeDefined()
+      expect(paycardData.currentFocus).toBe(id)
+      expect(paycardData.isFocused).toBeTruthy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      wrapperForm.find(`#${id}`).trigger('blur')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.currentFocus).toBe(id)
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+    }
+  })
+
+  it('should add focus and blur listeners to card month/year input of the outside form', async () => {
+    const array = ['v-card-month', 'v-card-year']
+    for (let index = 0; index < array.length; index++) {
+      const id = array[index];
+      const wrapperForm = createDefaultForm()
+      const paycardData = wrapperForm.vm.$children[0].$data
+      expect(paycardData.currentFocus).toBeNull()
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      expect(paycardData.focusElementStyle).toBeNull()
+      await timeout(300)
+      wrapperForm.find(`#${id}`).trigger('focus')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.focusElementStyle).toBeDefined()
+      expect(paycardData.currentFocus).toBe('cardDate')
+      expect(paycardData.isFocused).toBeTruthy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      wrapperForm.find(`#${id}`).trigger('blur')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.currentFocus).toBe('cardDate')
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+    }
+  })
+
+  it('should add focus and blur listeners to card cvv input of the outside form', async () => {
+    const id = 'v-card-cvv';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.currentFocus).toBeNull()
+    expect(paycardData.isFocused).toBeFalsy()
+    expect(paycardData.isCardFlipped).toBeFalsy()
+    expect(paycardData.focusElementStyle).toBeNull()
+    await timeout(300)
+    wrapperForm.find(`#${id}`).trigger('focus')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.focusElementStyle).toBeDefined()
+    expect(paycardData.currentFocus).toBe(id)
+    expect(paycardData.isFocused).toBeTruthy()
+    expect(paycardData.isCardFlipped).toBeTruthy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.currentFocus).toBe(id)
+    expect(paycardData.isFocused).toBeFalsy()
+    expect(paycardData.isCardFlipped).toBeFalsy()
+  })
+
+  it('should clear currentFocus if blur event from form input is called', async () => {
+    const id = 'v-card-number';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.isFocused).toBeFalsy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.isFocused).toBeFalsy()
+    await timeout(301)
+    expect(paycardData.currentFocus).toBeNull()
+  })
+
+  it('should clear isFocused if blur event from form input is called', async () => {
+    const id = 'v-card-number';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.isFocused).toBeFalsy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.isFocused).toBeFalsy()
+    // * this test needs improvement because of this manual set
+    paycardData.isFocused = true
+    await timeout(301)
+    expect(paycardData.currentFocus).toBeNull()
+  })
 
   it('should be able to mask numbers if the isCardNumberMasked prop is true', () => {
     // * for now, only the last four digits will be shown
@@ -378,24 +499,6 @@ describe('When I create the VuePaycard component', () => {
     expect(backgroundImage.default).toBe('')
     console.error = consoleLog
   })
-
-  // ! WIP
-  // it('should add focus and blur listeners to input form fields', async () => {
-    // const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
-    // const wrapper =  mount(VuePaycard, {
-    //   parentComponent: Form,
-    //   propsData: {
-    //     valueFields
-    //   },
-    //   stubs: {
-    //     transition: transitionStub()
-    //   },
-    //   attachTo: document.body
-    // })
-    // expect(wrapper.vm.$parent.$options.name).toBe('Form')
-    // wrapper.vm.changePlaceholder()
-    // await wrapper.vm.$nextTick()
-  // })
 
   it('should match default component snapshot', () => {
     const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }

@@ -1,9 +1,7 @@
 <template>
   <div class="card-form">
     <div class="card-list">
-      <VuePaycard
-        :valueFields="valueFields"
-      />
+      <VuePaycard :valueFields="valueFields" />
       <div class="card-form__inner">
         <div class="card-input">
           <label for="cardNumber" class="card-input__label">Card Number</label>
@@ -134,6 +132,13 @@ export default {
       cardMonth: null,
       cardYear: null,
       cardCvv: null
+    },
+    inputFields: {
+      cardNumber: 'v-card-number',
+      cardName: 'v-card-name',
+      cardMonth: 'v-card-month',
+      cardYear: 'v-card-year',
+      cardCvv: 'v-card-cvv'
     }
   }),
   computed: {
