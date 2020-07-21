@@ -146,7 +146,7 @@ $ yarn
 
 ### Storybook
 
-For visual testing, this project contains storybook which you can run by doing the next command
+For visual testing, this project contains storybook which you can run by running the command
 
 ```sh
 $ yarn storybook
@@ -156,7 +156,7 @@ $ yarn storybook
 
 Before making the PR, if you changed something that needs to be tested, please make the tests inside the `tests/unit` folder
 
-To run the tests, you can use the next command
+To run the tests, you can use the command
 
 ```sh
 $ yarn test:watch
