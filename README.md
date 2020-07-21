@@ -8,7 +8,7 @@
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
 [![GithubActions](https://github.com/guastallaigor/vue-paycard/workflows/vue-paycard/badge.svg)](https://github.com/guastallaigor/vue-paycard/actions)
-[![codecov](https://codecov.io/gh/guastallaigor/vue-paycard/branch/master/graph/badge.svg)](https://codecov.io/gh/guastallaigor/vue-paycard)
+[![Coverage Status](https://coveralls.io/repos/github/guastallaigor/vue-paycard/badge.svg?branch=master)](https://coveralls.io/github/guastallaigor/vue-paycard?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
 [![Dependencies](https://img.shields.io/david/guastallaigor/vue-paycard.svg)](https://github.com/guastallaigor/vue-paycard/blob/master/package.json)
