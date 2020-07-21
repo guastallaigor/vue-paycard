@@ -1,6 +1,6 @@
 {
   "name": "vue-paycard",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": false,
   "description": "Credit card component made with Vue.js",
   "homepage": "https://github.com/guastallaigor/vue-paycard#readme",
@@ -92,7 +92,8 @@
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": ["/node_modules/", "/tests/", "/src/assets/"]
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

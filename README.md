@@ -37,7 +37,7 @@ So this project is the Card component from there, but with some differences:
 
 Go to https://vue-paycard.netlify.app
 
-> **Note**: The form inside is just an example, **you** will need to create yours or copy it from `src/stories/index.stories.js`
+> **Note**: The form inside is just an example, **you** will need to create yours or copy it from `tests/unit/form.vue`
 
 ## How to install
 
@@ -80,7 +80,7 @@ export default {
 
 ### Nuxt.js
 
-You can import as a Nuxt.js plugin
+You can create a Nuxt.js plugin `vue-paycard.js`
 
 ```js
 import Vue from 'vue'
@@ -124,7 +124,7 @@ plugins: [
 | Property name          |   Type           |  Default  | Description |
 | ---------------------- | ---------------- | --------- | ----------- |
 | value-fields*          | Object           |   null    | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)). The `cardNumber` attribute value **must** be stored as it's shown: **#### #### #### ####**. The `cardYear` attribute value **must** be stored as **YYYY**   |
-| input-fields           | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' }  | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
+| input-fields           | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' }  | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default". You need to also add a **data-card-field** attribute for each of those inputs |
 | labels                 | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires', cardCvv: 'CVV' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
 | is-card-number-masked  | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
 | has-random-backgrounds | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |

@@ -1,7 +1,11 @@
-import { mount } from '@vue/test-utils'
+import { mount, enableAutoDestroy, createLocalVue, shallowMount } from '@vue/test-utils'
 import VuePaycard from '../../src/components/VuePaycard'
+import Form from './form.vue'
+
+enableAutoDestroy(afterEach)
 
 describe('When I create the VuePaycard component', () => {
+  const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms))
   const transitionStub = () => ({
     render: function(h) {
       return this.$options._renderChildren
@@ -15,6 +19,126 @@ describe('When I create the VuePaycard component', () => {
       }
     })
   }
+  const createDefaultForm = () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const localVue = createLocalVue()
+    const wrapperPaycard = shallowMount(VuePaycard, {
+      propsData: { valueFields },
+      localVue
+    })
+    const div = document.createElement('div')
+    div.id = 'form-test'
+    document.body.appendChild(div)
+    return mount(Form, {
+      AsyncComponent: wrapperPaycard,
+      localVue,
+      propsData: {
+        valueFields
+      },
+      stubs: {
+        transition: transitionStub()
+      },
+      attachTo: div
+    })
+  }
+
+  it('should add focus and blur listeners to card number/name input of the outside form', async () => {
+    const array = ['v-card-number', 'v-card-name']
+    for (let index = 0; index < array.length; index++) {
+      const id = array[index];
+      const wrapperForm = createDefaultForm()
+      const paycardData = wrapperForm.vm.$children[0].$data
+      expect(paycardData.currentFocus).toBeNull()
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      expect(paycardData.focusElementStyle).toBeNull()
+      await timeout(300)
+      wrapperForm.find(`#${id}`).trigger('focus')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.focusElementStyle).toBeDefined()
+      expect(paycardData.currentFocus).toBe(id)
+      expect(paycardData.isFocused).toBeTruthy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      wrapperForm.find(`#${id}`).trigger('blur')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.currentFocus).toBe(id)
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+    }
+  })
+
+  it('should add focus and blur listeners to card month/year input of the outside form', async () => {
+    const array = ['v-card-month', 'v-card-year']
+    for (let index = 0; index < array.length; index++) {
+      const id = array[index];
+      const wrapperForm = createDefaultForm()
+      const paycardData = wrapperForm.vm.$children[0].$data
+      expect(paycardData.currentFocus).toBeNull()
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      expect(paycardData.focusElementStyle).toBeNull()
+      await timeout(300)
+      wrapperForm.find(`#${id}`).trigger('focus')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.focusElementStyle).toBeDefined()
+      expect(paycardData.currentFocus).toBe('cardDate')
+      expect(paycardData.isFocused).toBeTruthy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+      wrapperForm.find(`#${id}`).trigger('blur')
+      await wrapperForm.vm.$nextTick()
+      expect(paycardData.currentFocus).toBe('cardDate')
+      expect(paycardData.isFocused).toBeFalsy()
+      expect(paycardData.isCardFlipped).toBeFalsy()
+    }
+  })
+
+  it('should add focus and blur listeners to card cvv input of the outside form', async () => {
+    const id = 'v-card-cvv';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.currentFocus).toBeNull()
+    expect(paycardData.isFocused).toBeFalsy()
+    expect(paycardData.isCardFlipped).toBeFalsy()
+    expect(paycardData.focusElementStyle).toBeNull()
+    await timeout(300)
+    wrapperForm.find(`#${id}`).trigger('focus')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.focusElementStyle).toBeDefined()
+    expect(paycardData.currentFocus).toBe(id)
+    expect(paycardData.isFocused).toBeTruthy()
+    expect(paycardData.isCardFlipped).toBeTruthy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.currentFocus).toBe(id)
+    expect(paycardData.isFocused).toBeFalsy()
+    expect(paycardData.isCardFlipped).toBeFalsy()
+  })
+
+  it('should clear currentFocus if blur event from form input is called', async () => {
+    const id = 'v-card-number';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.isFocused).toBeFalsy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.isFocused).toBeFalsy()
+    await timeout(301)
+    expect(paycardData.currentFocus).toBeNull()
+  })
+
+  it('should clear isFocused if blur event from form input is called', async () => {
+    const id = 'v-card-number';
+    const wrapperForm = createDefaultForm()
+    const paycardData = wrapperForm.vm.$children[0].$data
+    expect(paycardData.isFocused).toBeFalsy()
+    wrapperForm.find(`#${id}`).trigger('blur')
+    await wrapperForm.vm.$nextTick()
+    expect(paycardData.isFocused).toBeFalsy()
+    // * this test needs improvement because of this manual set
+    paycardData.isFocused = true
+    await timeout(301)
+    expect(paycardData.currentFocus).toBeNull()
+  })
 
   it('should be able to mask numbers if the isCardNumberMasked prop is true', () => {
     // * for now, only the last four digits will be shown
@@ -267,6 +391,113 @@ describe('When I create the VuePaycard component', () => {
     expect(fields).toMatchObject({})
     wrapper.destroy()
     expect(wrapper.exists()).toBeFalsy()
+  })
+
+  it('should check for each card type/brand', async () => {
+    // *  this test needs improvement since require is not working properly, so it's checking the alt property
+    let valueFields = { cardName: '', cardNumber: '4111 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    let wrapper = createPaycard({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    let img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('visa')
+    valueFields = { cardName: '', cardNumber: '3437 516165 16516', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('amex')
+    valueFields = { cardName: '', cardNumber: '5151 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('mastercard')
+    valueFields = { cardName: '', cardNumber: '6011 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('discover')
+    valueFields = { cardName: '', cardNumber: '6211 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('unionpay')
+    valueFields = { cardName: '', cardNumber: '9792 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('troy')
+    valueFields = { cardName: '', cardNumber: '3051 111111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('dinersclub')
+    valueFields = { cardName: '', cardNumber: '3528 9151 6515 6156', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('jcb')
+    valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.exists()).toBeFalsy()
+  })
+
+  it('should check for background covers from assets', () => {
+    // *  this test needs improvement since require is not working properly, so it's checking the aria-label property
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const wrapper = createPaycard({ valueFields, backgroundImage: 1, hasRandomBackgrounds: false })
+    expect(wrapper.exists()).toBeTruthy()
+    const covers = wrapper.findAll('.card-item__cover')
+    expect(covers.at(0).exists()).toBeTruthy()
+    expect(covers.at(0).attributes()['aria-label']).toBe('Image cover')
+    expect(covers.at(1).exists()).toBeTruthy()
+    expect(covers.at(1).attributes()['aria-label']).toBe('Image cover')
+  })
+
+    it('should validate all props', () => {
+    const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
+    const consoleLog = console.error
+    console.error = jest.fn()
+    const wrapper = createPaycard({ valueFields })
+    const valueFieldsProp = wrapper.vm.$options.props.valueFields
+    expect(valueFieldsProp.required).toBeTruthy()
+    expect(valueFieldsProp.type).toBe(Object)
+    expect(valueFieldsProp.default).toBeUndefined()
+    const inputFields = wrapper.vm.$options.props.inputFields
+    expect(inputFields.required).toBeFalsy()
+    expect(inputFields.type).toBe(Object)
+    expect(inputFields.default()).toMatchObject({
+      cardNumber: 'v-card-number',
+      cardName: 'v-card-name',
+      cardMonth: 'v-card-month',
+      cardYear: 'v-card-year',
+      cardCvv: 'v-card-cvv'
+    })
+    const labels = wrapper.vm.$options.props.labels
+    expect(labels.required).toBeFalsy()
+    expect(labels.type).toBe(Object)
+    expect(labels.default()).toMatchObject({
+      cardName: 'Full Name',
+      cardHolder: 'Card Holder',
+      cardMonth: 'MM',
+      cardYear: 'YY',
+      cardExpires: 'Expires',
+      cardCvv: 'CVV'
+    })
+    const isCardNumberMasked = wrapper.vm.$options.props.isCardNumberMasked
+    expect(isCardNumberMasked.required).toBeFalsy()
+    expect(isCardNumberMasked.type).toBe(Boolean)
+    expect(isCardNumberMasked.default).toBe(true)
+    const hasRandomBackgrounds = wrapper.vm.$options.props.hasRandomBackgrounds
+    expect(hasRandomBackgrounds.required).toBeFalsy()
+    expect(hasRandomBackgrounds.type).toBe(Boolean)
+    expect(hasRandomBackgrounds.default).toBe(true)
+    const backgroundImage = wrapper.vm.$options.props.backgroundImage
+    expect(backgroundImage.required).toBeFalsy()
+    expect(backgroundImage.type).toContain(Number)
+    expect(backgroundImage.type).toContain(String)
+    expect(backgroundImage.default).toBe('')
+    console.error = consoleLog
   })
 
   it('should match default component snapshot', () => {
