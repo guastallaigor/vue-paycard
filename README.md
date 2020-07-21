@@ -37,7 +37,7 @@ So this project is the Card component from there, but with some differences:
 
 Go to https://vue-paycard.netlify.app
 
-> **Note**: The form inside is just an example, **you** will need to create yours or copy it from `src/stories/index.stories.js`
+> **Note**: The form inside is just an example, **you** will need to create yours or copy it from `tests/unit/form.vue`
 
 ## How to install
 
