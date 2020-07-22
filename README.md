@@ -130,6 +130,20 @@ plugins: [
 | has-random-backgrounds | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
 | background-image       | [String, Number] | ''        | Set a background image link to the card (overrides `has-random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
 
+## Supported card types
+
+* American Express
+* Aura
+* Diners Club
+* Discover
+* Elo
+* JCB
+* Maestro
+* MasterCard
+* Troy
+* UnionPay
+* Visa
+
 ## Development
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/guastallaigor/vue-paycard/issues)
