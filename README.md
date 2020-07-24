@@ -133,16 +133,15 @@ plugins: [
 ## Supported card types
 
 * American Express
-* Aura
 * Diners Club
 * Discover
 * Elo
 * JCB
-* Maestro
 * MasterCard
 * Troy
 * UnionPay
 * Visa
+* Visa Electron
 
 ## Development
 
