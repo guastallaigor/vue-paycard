@@ -7,7 +7,7 @@ enableAutoDestroy(afterEach)
 describe('When I create the VuePaycard component', () => {
   const timeout = (ms) => new Promise(resolve => setTimeout(resolve, ms))
   const transitionStub = () => ({
-    render: function(h) {
+    render: function (h) {
       return this.$options._renderChildren
     }
   })
@@ -45,7 +45,7 @@ describe('When I create the VuePaycard component', () => {
   it('should add focus and blur listeners to card number/name input of the outside form', async () => {
     const array = ['v-card-number', 'v-card-name']
     for (let index = 0; index < array.length; index++) {
-      const id = array[index];
+      const id = array[index]
       const wrapperForm = createDefaultForm()
       const paycardData = wrapperForm.vm.$children[0].$data
       expect(paycardData.currentFocus).toBeNull()
@@ -70,7 +70,7 @@ describe('When I create the VuePaycard component', () => {
   it('should add focus and blur listeners to card month/year input of the outside form', async () => {
     const array = ['v-card-month', 'v-card-year']
     for (let index = 0; index < array.length; index++) {
-      const id = array[index];
+      const id = array[index]
       const wrapperForm = createDefaultForm()
       const paycardData = wrapperForm.vm.$children[0].$data
       expect(paycardData.currentFocus).toBeNull()
@@ -93,7 +93,7 @@ describe('When I create the VuePaycard component', () => {
   })
 
   it('should add focus and blur listeners to card cvv input of the outside form', async () => {
-    const id = 'v-card-cvv';
+    const id = 'v-card-cvv'
     const wrapperForm = createDefaultForm()
     const paycardData = wrapperForm.vm.$children[0].$data
     expect(paycardData.currentFocus).toBeNull()
@@ -115,7 +115,7 @@ describe('When I create the VuePaycard component', () => {
   })
 
   it('should clear currentFocus if blur event from form input is called', async () => {
-    const id = 'v-card-number';
+    const id = 'v-card-number'
     const wrapperForm = createDefaultForm()
     const paycardData = wrapperForm.vm.$children[0].$data
     expect(paycardData.isFocused).toBeFalsy()
@@ -127,7 +127,7 @@ describe('When I create the VuePaycard component', () => {
   })
 
   it('should clear isFocused if blur event from form input is called', async () => {
-    const id = 'v-card-number';
+    const id = 'v-card-number'
     const wrapperForm = createDefaultForm()
     const paycardData = wrapperForm.vm.$children[0].$data
     expect(paycardData.isFocused).toBeFalsy()
@@ -396,7 +396,7 @@ describe('When I create the VuePaycard component', () => {
   it('should check for each card type/brand', async () => {
     // *  this test needs improvement since require is not working properly, so it's checking the alt property
     let valueFields = { cardName: '', cardNumber: '4111 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
-    let wrapper = createPaycard({ valueFields })
+    const wrapper = createPaycard({ valueFields })
     expect(wrapper.exists()).toBeTruthy()
     let img = wrapper.find('.card-item__typeImg')
     expect(img.attributes().alt).toContain('visa')
@@ -435,6 +435,16 @@ describe('When I create the VuePaycard component', () => {
     expect(wrapper.exists()).toBeTruthy()
     img = wrapper.find('.card-item__typeImg')
     expect(img.attributes().alt).toContain('jcb')
+    valueFields = { cardName: '', cardNumber: '6362 9700 0045 7013', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('elo')
+    valueFields = { cardName: '', cardNumber: '4913 8185 2881 4543', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('visaelectron')
     valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
     await wrapper.setProps({ valueFields })
     expect(wrapper.exists()).toBeTruthy()
@@ -454,7 +464,7 @@ describe('When I create the VuePaycard component', () => {
     expect(covers.at(1).attributes()['aria-label']).toBe('Image cover')
   })
 
-    it('should validate all props', () => {
+  it('should validate all props', () => {
     const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
     const consoleLog = console.error
     console.error = jest.fn()
