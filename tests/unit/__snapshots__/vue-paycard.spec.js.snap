@@ -61,7 +61,8 @@ exports[`When I create the VuePaycard component should match default component s
         </label>
         <div class="card-item__date"><label for="v-card-month" aria-label="Expiration date" class="card-item__dateTitle">Expires</label> <label for="v-card-month" aria-label="Card month" class="card-item__dateItem"><span name="slide-fade-up">MM</span></label>
           /
-          <label for="v-card-year" aria-label="Card year" class="card-item__dateItem"><span name="slide-fade-up">YY</span></label></div>
+          <label for="v-card-year" aria-label="Card year" class="card-item__dateItem"><span name="slide-fade-up">YY</span></label>
+        </div>
       </div>
     </div>
   </div>
