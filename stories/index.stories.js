@@ -14,6 +14,7 @@ export default {
       // optional flag to prevent the automatic check
       manual: true,
     },
+    controls: { hideNoControlsWarning: true },
     docs: {
       inlineStories: true
     }
