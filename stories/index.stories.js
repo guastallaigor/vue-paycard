@@ -1,19 +1,70 @@
-import '../.storybook/storybook.css'
-import { object, boolean, text } from '@storybook/addon-knobs'
-import { addDecorator, addParameters } from '@storybook/vue'
-import { withA11y } from '@storybook/addon-a11y'
 import VuePaycard from '../src/components/VuePaycard.vue'
-
-addParameters({
-  docs: {
-    inlineStories: true
-  }
-})
-addDecorator(withA11y)
 
 export default {
   title: 'VuePaycard',
-  component: VuePaycard
+  component: VuePaycard,
+  parameters: {
+    a11y: {
+      // optional selector which element to inspect
+      element: '#root',
+      // axe-core configurationOptions (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#parameters-1)
+      config: {},
+      // axe-core optionsParameter (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter)
+      options: {},
+      // optional flag to prevent the automatic check
+      manual: true,
+    },
+    docs: {
+      inlineStories: true
+    }
+  },
+  argTypes: {
+    valueFields: {
+      control: 'object'
+    },
+    inputFields: {
+      control: 'object'
+    },
+    labels: {
+      control: 'object'
+    },
+    isCardNumberMasked: {
+      control: 'boolean'
+    },
+    hasRandomBackgrounds: {
+      control: 'boolean'
+    },
+    backgroundImage: {
+      control: 'text'
+    }
+  },
+  args: {
+    valueFields: {
+      cardName: '',
+      cardNumber: '',
+      cardMonth: null,
+      cardYear: null,
+      cardCvv: null
+    },
+    inputFields: {
+      cardNumber: 'v-card-number',
+      cardName: 'v-card-name',
+      cardMonth: 'v-card-month',
+      cardYear: 'v-card-year',
+      cardCvv: 'v-card-cvv'
+    },
+    labels: {
+      cardName: 'Full Name',
+      cardHolder: 'Card Holder',
+      cardMonth: 'MM',
+      cardYear: 'YY',
+      cardExpires: 'Expires',
+      cardCvv: 'CVV'
+    },
+    isCardNumberMasked: false,
+    hasRandomBackgrounds: true,
+    backgroundImage: ''
+  }
 }
 
 export const DefaultComponent = () => ({
@@ -127,46 +178,46 @@ export const DefaultComponent = () => ({
   props: {
     valueFields: {
       type: Object,
-      default: object('Value fields', {
+      default: {
         cardName: '',
         cardNumber: '',
         cardMonth: null,
         cardYear: null,
         cardCvv: null
-      })
+      }
     },
     inputFields: {
       type: Object,
-      default: object('Input field ids', {
+      default: {
         cardNumber: 'v-card-number',
         cardName: 'v-card-name',
         cardMonth: 'v-card-month',
         cardYear: 'v-card-year',
         cardCvv: 'v-card-cvv'
-      })
+      }
     },
     labels: {
       type: Object,
-      default: object('Labels', {
+      default: {
         cardName: 'Full Name',
         cardHolder: 'Card Holder',
         cardMonth: 'MM',
         cardYear: 'YY',
         cardExpires: 'Expires',
         cardCvv: 'CVV'
-      })
+      }
     },
     isCardNumberMasked: {
       type: Boolean,
-      default: boolean('Is credit card number masked', true)
+      default: true
     },
     hasRandomBackgrounds: {
       type: Boolean,
-      default: boolean('Random backgrounds', true)
+      default: true
     },
     backgroundImage: {
       type: [String, Number],
-      default: text('Background image', '')
+      default: ''
     }
   },
   template: `
@@ -269,7 +320,3 @@ export const DefaultComponent = () => ({
   </div>
   `
 })
-
-DefaultComponent.story = {
-  name: 'Default'
-}
