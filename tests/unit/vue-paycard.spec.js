@@ -450,6 +450,11 @@ describe('When I create the VuePaycard component', () => {
     expect(wrapper.exists()).toBeTruthy()
     img = wrapper.find('.card-item__typeImg')
     expect(img.attributes().alt).toContain('uatp')
+    valueFields = { cardName: '', cardNumber: '6706 0000 0000 0000', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('laser')
     valueFields = { cardName: '', cardNumber: '4913 8185 2881 4543', cardMonth: '', cardYear: '', cardCvv: '' }
     await wrapper.setProps({ valueFields })
     expect(wrapper.exists()).toBeTruthy()
