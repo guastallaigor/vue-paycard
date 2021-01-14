@@ -140,6 +140,9 @@ plugins: [
 * MasterCard
 * Troy
 * UnionPay
+* Maestro
+* UATP
+* Laser
 * Visa
 * Visa Electron
 
