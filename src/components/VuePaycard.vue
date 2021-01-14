@@ -244,7 +244,7 @@ export default {
       if (number.match(/^6011/)) return 'discover'
       if (number.match(/^62/)) return 'unionpay'
       if (number.match(/^9792/)) return 'troy'
-      if (number.match(/^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}/)) return 'dinersclub'
+      if (number.match(/^3(0[0-5]|[68]\d)\d{11,16}/)) return 'dinersclub'
       if (number.match(/^35(2[89]|[3-8])/)) return 'jcb'
       if (number.match(/^(?:5[06789]\d\d|(?!6011[0234])(?!60117[4789])(?!60118[6789])(?!60119)(?!64[456789])(?!65)6\d{3})\d{8,15}$/)) return 'maestro'
       if (number.match(/^1\d{14}$/)) return 'uatp'
