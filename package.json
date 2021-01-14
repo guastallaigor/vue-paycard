@@ -1,6 +1,6 @@
 {
   "name": "vue-paycard",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "private": false,
   "description": "Credit card component made with Vue.js",
   "homepage": "https://github.com/guastallaigor/vue-paycard#readme",
@@ -72,7 +72,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
+    "rules": {
+      "vue/experimental-script-setup-vars": 0
+    },
     "overrides": [
       {
         "files": [

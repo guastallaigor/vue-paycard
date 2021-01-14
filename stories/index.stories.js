@@ -12,7 +12,7 @@ export default {
       // axe-core optionsParameter (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter)
       options: {},
       // optional flag to prevent the automatic check
-      manual: true,
+      manual: true
     },
     controls: { hideNoControlsWarning: true },
     docs: {
@@ -120,7 +120,7 @@ export const DefaultComponent = () => ({
     },
     changeNumber (e) {
       this.valueFields.cardNumber = e.target.value
-      let value = this.valueFields.cardNumber.replace(/\D/g, '')
+      const value = this.valueFields.cardNumber.replace(/\D/g, '')
       // american express, 15 digits
       if ((/^3[47]\d{0,13}$/).test(value)) {
         this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
@@ -134,7 +134,7 @@ export const DefaultComponent = () => ({
       }
       // eslint-disable-next-line
       if (e.inputType == 'deleteContentBackward') {
-        let lastChar = this.valueFields.cardNumber.substring(this.valueFields.cardNumber.length, this.valueFields.cardNumber.length - 1)
+        const lastChar = this.valueFields.cardNumber.substring(this.valueFields.cardNumber.length, this.valueFields.cardNumber.length - 1)
         // eslint-disable-next-line
         if (lastChar == ' ') { this.valueFields.cardNumber = this.valueFields.cardNumber.substring(0, this.valueFields.cardNumber.length - 1) }
       }
@@ -164,7 +164,7 @@ export const DefaultComponent = () => ({
     maskCardNumber () {
       this.valueFields.cardNumberNotMask = this.valueFields.cardNumber
       this.mainCardNumber = this.valueFields.cardNumber
-      let arr = this.valueFields.cardNumber.split('')
+      const arr = this.valueFields.cardNumber.split('')
       arr.forEach((element, index) => {
         if (index > 4 && index < 14 && element.trim() !== '') {
           arr[index] = '*'
@@ -174,7 +174,7 @@ export const DefaultComponent = () => ({
     },
     unMaskCardNumber () {
       this.valueFields.cardNumber = this.mainCardNumber
-    },
+    }
   },
   props: {
     valueFields: {
