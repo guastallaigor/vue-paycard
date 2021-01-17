@@ -415,7 +415,7 @@ describe('When I create the VuePaycard component', () => {
     expect(wrapper.exists()).toBeTruthy()
     img = wrapper.find('.card-item__typeImg')
     expect(img.attributes().alt).toContain('discover')
-    valueFields = { cardName: '', cardNumber: '6211 1111 1111 1111', cardMonth: '', cardYear: '', cardCvv: '' }
+    valueFields = { cardName: '', cardNumber: '62600094752489245', cardMonth: '', cardYear: '', cardCvv: '' }
     await wrapper.setProps({ valueFields })
     expect(wrapper.exists()).toBeTruthy()
     img = wrapper.find('.card-item__typeImg')
@@ -455,6 +455,26 @@ describe('When I create the VuePaycard component', () => {
     expect(wrapper.exists()).toBeTruthy()
     img = wrapper.find('.card-item__typeImg')
     expect(img.attributes().alt).toContain('laser')
+    valueFields = { cardName: '', cardNumber: '6062 8256 6638 5648', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('hipercard')
+    valueFields = { cardName: '', cardNumber: '5031 6889 1321 1342', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('aura')
+    valueFields = { cardName: '', cardNumber: '5019 6066 8505 1379', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('dankort')
+    valueFields = { cardName: '', cardNumber: '2204 1569 8128 9629', cardMonth: '', cardYear: '', cardCvv: '' }
+    await wrapper.setProps({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('mir')
     valueFields = { cardName: '', cardNumber: '4913 8185 2881 4543', cardMonth: '', cardYear: '', cardCvv: '' }
     await wrapper.setProps({ valueFields })
     expect(wrapper.exists()).toBeTruthy()
