@@ -70,6 +70,7 @@ Or locally in any component
 
 ```js
 import { VuePaycard } from 'vue-paycard'
+// In v0.5+ you don't need the brackets above
 
 export default {
   components: {
@@ -133,12 +134,18 @@ plugins: [
 ## Supported card types
 
 * American Express
+* Aura
+* Dankort
 * Diners Club
 * Discover
 * Elo
+* Hipercard
 * JCB
+* Laser
+* Maestro
 * MasterCard
 * Troy
+* UATP
 * UnionPay
 * Visa
 * Visa Electron
