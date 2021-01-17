@@ -70,6 +70,7 @@ Or locally in any component
 
 ```js
 import { VuePaycard } from 'vue-paycard'
+// In v0.5+ you don't need the brackets above
 
 export default {
   components: {
