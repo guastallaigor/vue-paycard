@@ -144,6 +144,7 @@ plugins: [
 * Laser
 * Maestro
 * MasterCard
+* MIR
 * Troy
 * UATP
 * UnionPay
