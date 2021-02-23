@@ -60,23 +60,23 @@ $ yarn add vue-paycard
 You can import in your `main.js` file
 
 ```js
-import Vue from 'vue'
-import VuePaycard from 'vue-paycard'
+import Vue from "vue";
+import VuePaycard from "vue-paycard";
 
-Vue.use(VuePaycard)
+Vue.use(VuePaycard);
 ```
 
 Or locally in any component
 
 ```js
-import { VuePaycard } from 'vue-paycard'
+import { VuePaycard } from "vue-paycard";
 // In v0.5+ you don't need the brackets above
 
 export default {
   components: {
-    VuePaycard
-  }
-}
+    VuePaycard,
+  },
+};
 ```
 
 ### Nuxt.js
@@ -84,18 +84,16 @@ export default {
 You can create a Nuxt.js plugin `vue-paycard.js`
 
 ```js
-import Vue from 'vue'
-import VuePaycard from 'vue-paycard'
+import Vue from "vue";
+import VuePaycard from "vue-paycard";
 
-Vue.use(VuePaycard)
+Vue.use(VuePaycard);
 ```
 
 and then import it in your `nuxt.config.js` file
 
 ```js
-plugins: [
-  { src: '~/plugins/vue-paycard.js', mode: 'client' }
-]
+plugins: [{ src: "~/plugins/vue-paycard.js", mode: "client" }];
 ```
 
 ## <a name="usage">Basic usage</a>
@@ -109,47 +107,47 @@ plugins: [
   export default {
     data: () => ({
       valueFields: {
-        cardName: '',
-        cardNumber: '',
-        cardMonth: '',
-        cardYear: '',
-        cardCvv: ''
-      }
-    })
-  }
+        cardName: "",
+        cardNumber: "",
+        cardMonth: "",
+        cardYear: "",
+        cardCvv: "",
+      },
+    }),
+  };
 </script>
 ```
 
 ## Props
 
-| Property name          |   Type           |  Default  | Description |
-| ---------------------- | ---------------- | --------- | ----------- |
-| value-fields*          | Object           |   null    | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)). The `cardNumber` attribute value **must** be stored as it's shown: **#### #### #### ####**. The `cardYear` attribute value **must** be stored as **YYYY**   |
-| input-fields           | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' }  | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default". You need to also add a **data-card-field** attribute for each of those inputs |
-| labels                 | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires', cardCvv: 'CVV' } | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default" |
-| is-card-number-masked  | Boolean          | true      | Hides the numbers provided and changes to "*". Only shows the last four digits |
-| has-random-backgrounds | Boolean          | true      | Set a random background image to the card. You can check all the images in `src/assets/images` |
-| background-image       | [String, Number] | ''        | Set a background image link to the card (overrides `has-random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images` |
+| Property name          | Type             | Default                                                                                                                             | Description                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value-fields\*         | Object           | null                                                                                                                                | A **required** object that let you set the credit card holders name, number, month, year and cvv. Note that is **required** that all the attributes name must be exactly as the example above (see [Basic usage](#usage)). The `cardNumber` attribute value **must** be stored as it's shown: **#### #### #### ####**. The `cardYear` attribute value **must** be stored as **YYYY** |
+| input-fields           | Object           | { cardNumber: 'v-card-number', cardName: 'v-card-name', cardMonth: 'v-card-month', cardYear: 'v-card-year', cardCvv: 'v-card-cvv' } | An object that contains all your input fields id from your form. Each input field must have a valid and unique id to bind focus/blur listeners that this component provides. Note that is **required** that all the attributes name must be exactly as the ones in "Default". You need to also add a **data-card-field** attribute for each of those inputs                          |
+| labels                 | Object           | { cardName: 'Full Name', cardHolder: 'Card Holder', cardMonth: 'MM', cardYear: 'YY', cardExpires: 'Expires', cardCvv: 'CVV' }       | Set custom labels for the card if needed. English by default. Note that is **required** that all the attributes name must be exactly as the ones in "Default"                                                                                                                                                                                                                        |
+| is-card-number-masked  | Boolean          | true                                                                                                                                | Hides the numbers provided and changes to "\*". Only shows the last four digits                                                                                                                                                                                                                                                                                                      |
+| has-random-backgrounds | Boolean          | true                                                                                                                                | Set a random background image to the card. You can check all the images in `src/assets/images`                                                                                                                                                                                                                                                                                       |
+| background-image       | [String, Number] | ''                                                                                                                                  | Set a background image link to the card (overrides `has-random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images`                                                                                                                                                                                                 |
 
 ## Supported card types
 
-* American Express
-* Aura
-* Dankort
-* Diners Club
-* Discover
-* Elo
-* Hipercard
-* JCB
-* Laser
-* Maestro
-* MasterCard
-* MIR
-* Troy
-* UATP
-* UnionPay
-* Visa
-* Visa Electron
+- American Express
+- Aura
+- Dankort
+- Diners Club
+- Discover
+- Elo
+- Hipercard
+- JCB
+- Laser
+- Maestro
+- MasterCard
+- MIR
+- Troy
+- UATP
+- UnionPay
+- Visa
+- Visa Electron
 
 ## Development
 
@@ -199,7 +197,7 @@ There's a `pre-push` hook that runs all the unit tests before you can push it
 
 If an error occurs, you can use the `yarn commit:retry` command that runs the previous `yarn commit` that you already filled
 
-<a href="https://www.buymeacoffee.com/guastallaigor" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C1C63QCB8)
 
 ## License
 
