@@ -298,6 +298,9 @@
   flex-shrink: 0;
   cursor: pointer;
 }
+.card-item__date label {
+  cursor: pointer;
+}
 @media screen and (max-width: 480px) {
   .card-item__date {
     font-size: 16px;
