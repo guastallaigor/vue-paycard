@@ -40,34 +40,32 @@
           aria-label="Card number"
           class="card-item__number"
         >
-          <template>
-            <span v-for="(n, $index) in currentPlaceholder" :key="$index">
-              <transition name="slide-fade-up">
-                <div
-                  v-if="getIsNumberMasked($index, n)"
-                  class="card-item__numberItem"
-                >
-                  *
-                </div>
-                <div
-                  v-else-if="valueFields.cardNumber.length > $index"
-                  :class="{ '-active': n.trim() === '' }"
-                  :key="currentPlaceholder"
-                  class="card-item__numberItem"
-                >
-                  {{ valueFields.cardNumber[$index] }}
-                </div>
-                <div
-                  v-else
-                  :class="{ '-active': n.trim() === '' }"
-                  :key="currentPlaceholder + 1"
-                  class="card-item__numberItem"
-                >
-                  {{ n }}
-                </div>
-              </transition>
-            </span>
-          </template>
+          <span v-for="(n, $index) in currentPlaceholder" :key="$index">
+            <transition name="slide-fade-up">
+              <div
+                v-if="getIsNumberMasked($index, n)"
+                class="card-item__numberItem"
+              >
+                *
+              </div>
+              <div
+                v-else-if="valueFields.cardNumber.length > $index"
+                :class="{ '-active': n.trim() === '' }"
+                :key="currentPlaceholder"
+                class="card-item__numberItem"
+              >
+                {{ valueFields.cardNumber[$index] }}
+              </div>
+              <div
+                v-else
+                :class="{ '-active': n.trim() === '' }"
+                :key="currentPlaceholder + 1"
+                class="card-item__numberItem"
+              >
+                {{ n }}
+              </div>
+            </transition>
+          </span>
         </label>
         <div class="card-item__content">
           <label
@@ -244,7 +242,8 @@ export default {
         : this.defaultPlaceholder
     },
     getCreditCardImage () {
-      return require(`../assets/images/${this.cardType}.png`)
+      const path = require(`../assets/images/${this.cardType}.png`)
+      return path.default || path
     },
     cardType () {
       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
@@ -283,7 +282,8 @@ export default {
       const numberImage = parseInt(this.backgroundImage)
 
       if (this.isBackgroundImageFromAssets) {
-        return require(`../assets/images/${numberImage}.jpg`)
+        const path = require(`../assets/images/${numberImage}.jpg`)
+        return path.default || path
       }
 
       if (this.backgroundImage && !Number.isFinite(numberImage)) {
@@ -293,7 +293,8 @@ export default {
       if (this.hasRandomBackgrounds) {
         const random = Math.floor(Math.random() * 25 + 1)
 
-        return require(`../assets/images/${random}.jpg`)
+        const path = require(`../assets/images/${random}.jpg`)
+        return path.default || path
       }
 
       return null
