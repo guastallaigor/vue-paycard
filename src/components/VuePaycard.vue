@@ -197,6 +197,10 @@ export default {
     backgroundImage: {
       type: [String, Number],
       default: ''
+    },
+    setType: {
+      type: [String],
+      default: '',
     }
   },
   data () {
@@ -246,6 +250,11 @@ export default {
       return path.default || path
     },
     cardType () {
+      if (this.setType.length) {
+        const sT = this.setType.toLowerCase().replace(/ /g, '')
+        return sT === 'americanexpress' ? 'amex' : sT
+      }
+
       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
 
       if (number.match(/^4(026|17500|405|508|844|91[37])/)) return 'visaelectron'
