@@ -37,6 +37,9 @@ export default {
     },
     backgroundImage: {
       control: 'text'
+    },
+    setType: {
+      control: 'text'
     }
   },
   args: {
@@ -64,7 +67,8 @@ export default {
     },
     isCardNumberMasked: false,
     hasRandomBackgrounds: true,
-    backgroundImage: ''
+    backgroundImage: '',
+    setType: ''
   }
 }
 
@@ -98,11 +102,12 @@ export const DefaultComponent = () => ({
   data: () => ({
     minCardYear: new Date().getFullYear(),
     mainCardNumber: '',
-    cardNumberMaxLength: 19
+    cardNumberMaxLength: 19,
+    generatedType: ''
   }),
   computed: {
     minCardMonth () {
-      if (this.valueFields.cardYear === this.minCardYear) return new Date().getMonth() + 1
+      if (this.valueFields.cardYear === this.minCardYear) { return new Date().getMonth() + 1 }
       return 1
     }
   },
@@ -118,28 +123,52 @@ export const DefaultComponent = () => ({
       this.valueFields.cardName = e.target.value
       this.$emit('input-card-name', this.valueFields.cardName)
     },
+    changeType (val) {
+      this.generatedType = val
+    },
     changeNumber (e) {
       this.valueFields.cardNumber = e.target.value
       const value = this.valueFields.cardNumber.replace(/\D/g, '')
       // american express, 15 digits
-      if ((/^3[47]\d{0,13}$/).test(value)) {
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+      if (/^3[47]\d{0,13}$/.test(value)) {
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, '$1 ')
+          .replace(/(\d{4}) (\d{6})/, '$1 $2 ')
         this.cardNumberMaxLength = 17
-      } else if ((/^3(?:0[0-5]|[68]\d)\d{0,11}$/).test(value)) { // diner's club, 14 digits
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
+      } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(value)) {
+        // diner's club, 14 digits
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, '$1 ')
+          .replace(/(\d{4}) (\d{6})/, '$1 $2 ')
         this.cardNumberMaxLength = 16
       } else if (/^62[0-9]\d*/.test(value)) {
-        this.valueFields.cardNumber = value.replace(/(\d{6})/, '$1 ').replace(/(\d{6}) (\d{7})/, '$1 $2 ').replace(/(\d{6}) (\d{7}) (\d{6})/, '$1 $2 $3 ').replace(/(\d{5}) (\d{5}) (\d{5}) (\d{4})/, '$1 $2 $3 $4')
+        this.valueFields.cardNumber = value
+          .replace(/(\d{6})/, '$1 ')
+          .replace(/(\d{6}) (\d{7})/, '$1 $2 ')
+          .replace(/(\d{6}) (\d{7}) (\d{6})/, '$1 $2 $3 ')
+          .replace(/(\d{5}) (\d{5}) (\d{5}) (\d{4})/, '$1 $2 $3 $4')
         this.cardNumberMaxLength = 21
-      } else if ((/^\d{0,16}$/).test(value)) { // regular cc number, 16 digits
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
+      } else if (/^\d{0,16}$/.test(value)) {
+        // regular cc number, 16 digits
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, '$1 ')
+          .replace(/(\d{4}) (\d{4})/, '$1 $2 ')
+          .replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
         this.cardNumberMaxLength = 19
       }
       // eslint-disable-next-line
-      if (e.inputType == 'deleteContentBackward') {
-        const lastChar = this.valueFields.cardNumber.substring(this.valueFields.cardNumber.length, this.valueFields.cardNumber.length - 1)
+      if (e.inputType == "deleteContentBackward") {
+        const lastChar = this.valueFields.cardNumber.substring(
+          this.valueFields.cardNumber.length,
+          this.valueFields.cardNumber.length - 1
+        )
         // eslint-disable-next-line
-        if (lastChar == ' ') { this.valueFields.cardNumber = this.valueFields.cardNumber.substring(0, this.valueFields.cardNumber.length - 1) }
+        if (lastChar == " ") {
+          this.valueFields.cardNumber = this.valueFields.cardNumber.substring(
+            0,
+            this.valueFields.cardNumber.length - 1
+          )
+        }
       }
       this.$emit('input-card-number', this.valueFields.cardNumber)
     },
@@ -222,6 +251,10 @@ export const DefaultComponent = () => ({
     backgroundImage: {
       type: [String, Number],
       default: ''
+    },
+    setType: {
+      type: String,
+      default: ''
     }
   },
   template: `
@@ -234,6 +267,8 @@ export const DefaultComponent = () => ({
         :isCardNumberMasked="isCardNumberMasked"
         :hasRandomBackgrounds="hasRandomBackgrounds"
         :backgroundImage="backgroundImage"
+        :setType="setType"
+        @get-type="changeType"
       />
       <div class="card-form__inner">
         <div class="card-input">

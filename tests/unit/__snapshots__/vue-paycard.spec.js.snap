@@ -13,44 +13,44 @@ exports[`When I create the VuePaycard component should match default component s
           <!---->
         </div>
       </div> <label for="v-card-number" aria-label="Card number" class="card-item__number"><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
-                 
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
-                 
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
-                 
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
-                #
-              </div></span></label>
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+               
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+               
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem -active" name="slide-fade-up">
+               
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span><span><div class="card-item__numberItem" name="slide-fade-up">
+              #
+            </div></span></label>
       <div class="card-item__content"><label for="v-card-name" aria-label="Card name" class="card-item__info">
           <div class="card-item__holder">
             Card Holder

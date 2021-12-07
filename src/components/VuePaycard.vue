@@ -21,7 +21,11 @@
       </div>
       <div class="card-item__wrapper">
         <div class="card-item__top">
-          <img src="../assets/images/chip.png" class="card-item__chip" alt="Card chip image" />
+          <img
+            src="../assets/images/chip.png"
+            class="card-item__chip"
+            alt="Card chip image"
+          />
           <div class="card-item__type">
             <transition name="slide-fade-up">
               <img
@@ -40,34 +44,32 @@
           aria-label="Card number"
           class="card-item__number"
         >
-          <template>
-            <span v-for="(n, $index) in currentPlaceholder" :key="$index">
-              <transition name="slide-fade-up">
-                <div
-                  v-if="getIsNumberMasked($index, n)"
-                  class="card-item__numberItem"
-                >
-                  *
-                </div>
-                <div
-                  v-else-if="valueFields.cardNumber.length > $index"
-                  :class="{ '-active': n.trim() === '' }"
-                  :key="currentPlaceholder"
-                  class="card-item__numberItem"
-                >
-                  {{ valueFields.cardNumber[$index] }}
-                </div>
-                <div
-                  v-else
-                  :class="{ '-active': n.trim() === '' }"
-                  :key="currentPlaceholder + 1"
-                  class="card-item__numberItem"
-                >
-                  {{ n }}
-                </div>
-              </transition>
-            </span>
-          </template>
+          <span v-for="(n, $index) in currentPlaceholder" :key="$index">
+            <transition name="slide-fade-up">
+              <div
+                v-if="getIsNumberMasked($index, n)"
+                class="card-item__numberItem"
+              >
+                *
+              </div>
+              <div
+                v-else-if="valueFields.cardNumber.length > $index"
+                :class="{ '-active': n.trim() === '' }"
+                :key="currentPlaceholder"
+                class="card-item__numberItem"
+              >
+                {{ valueFields.cardNumber[$index] }}
+              </div>
+              <div
+                v-else
+                :class="{ '-active': n.trim() === '' }"
+                :key="currentPlaceholder + 1"
+                class="card-item__numberItem"
+              >
+                {{ n }}
+              </div>
+            </transition>
+          </span>
         </label>
         <div class="card-item__content">
           <label
@@ -103,10 +105,17 @@
             </transition>
           </label>
           <div class="card-item__date" ref="cardDate">
-            <label :for="inputFields.cardMonth" class="card-item__dateTitle" aria-label="Expiration date">{{
-              labels.cardExpires || "Expires"
-            }}</label>
-            <label :for="inputFields.cardMonth" class="card-item__dateItem" aria-label="Card month">
+            <label
+              :for="inputFields.cardMonth"
+              class="card-item__dateTitle"
+              aria-label="Expiration date"
+              >{{ labels.cardExpires || "Expires" }}</label
+            >
+            <label
+              :for="inputFields.cardMonth"
+              class="card-item__dateItem"
+              aria-label="Card month"
+            >
               <transition name="slide-fade-up">
                 <span
                   v-if="valueFields.cardMonth"
@@ -117,7 +126,11 @@
               </transition>
             </label>
             /
-            <label :for="inputFields.cardYear" class="card-item__dateItem" aria-label="Card year">
+            <label
+              :for="inputFields.cardYear"
+              class="card-item__dateItem"
+              aria-label="Card year"
+            >
               <transition name="slide-fade-up">
                 <span v-if="valueFields.cardYear" :key="valueFields.cardYear">{{
                   String(valueFields.cardYear).slice(2, 4)
@@ -199,8 +212,13 @@ export default {
     backgroundImage: {
       type: [String, Number],
       default: ''
+    },
+    setType: {
+      type: String,
+      default: ''
     }
   },
+  emits: ['get-type'],
   data () {
     const defaultPlaceholder = '#### #### #### ####'
 
@@ -225,7 +243,8 @@ export default {
         this.focusElementStyle = null
       }
     },
-    cardType () {
+    cardType (val) {
+      this.$emit('get-type', val)
       this.changePlaceholder()
     }
   },
@@ -233,6 +252,9 @@ export default {
     this.init()
   },
   beforeDestroy () {
+    this.destroy()
+  },
+  beforeUnmount () {
     this.destroy()
   },
   computed: {
@@ -244,14 +266,45 @@ export default {
         : this.defaultPlaceholder
     },
     getCreditCardImage () {
-      return require(`../assets/images/${this.cardType}.png`)
+      const path = require(`../assets/images/${this.cardType}.png`)
+      return path.default || path
     },
     cardType () {
+      const AcceptedTypes = [
+        'visaelectron',
+        'visa',
+        'elo',
+        'amex',
+        'mastercard',
+        'discover',
+        'unionpay',
+        'troy',
+        'dinersclub',
+        'jcb',
+        'laser',
+        'dankort',
+        'uatp',
+        'mir',
+        'hipercard',
+        'aura',
+        'maestro'
+      ]
+      const sT = this.setType?.toLowerCase()?.replace(/ /g, '')
+      if (sT?.length && AcceptedTypes.includes(sT)) return sT
+
       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
 
-      if (number.match(/^4(026|17500|405|508|844|91[37])/)) return 'visaelectron'
+      if (number.match(/^4(026|17500|405|508|844|91[37])/)) {
+        return 'visaelectron'
+      }
       if (number.match(/^4\d{12}(\d{3})?$/)) return 'visa'
-      if (number.match(/^((509091)|(636368)|(636297)|(504175)|(438935)|(40117[8-9])|(45763[1-2])|(457393)|(431274)|(50990[0-2])|(5099[7-9][0-9])|(50996[4-9])|(509[1-8][0-9][0-9])|(5090(0[0-2]|0[4-9]|1[2-9]|[24589][0-9]|3[1-9]|6[0-46-9]|7[0-24-9]))|(5067(0[0-24-8]|1[0-24-9]|2[014-9]|3[0-379]|4[0-9]|5[0-3]|6[0-5]|7[0-8]))|(6504(0[5-9]|1[0-9]|2[0-9]|3[0-9]))|(6504(8[5-9]|9[0-9])|6505(0[0-9]|1[0-9]|2[0-9]|3[0-8]))|(6505(4[1-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-8]))|(6507(0[0-9]|1[0-8]))|(65072[0-7])|(6509(0[1-9]|1[0-9]|20))|(6516(5[2-9]|6[0-9]|7[0-9]))|(6550(0[0-9]|1[0-9]))|(6550(2[1-9]|3[0-9]|4[0-9]|5[0-8])))/)) return 'elo'
+      if (
+        number.match(
+          /^((509091)|(636368)|(636297)|(504175)|(438935)|(40117[8-9])|(45763[1-2])|(457393)|(431274)|(50990[0-2])|(5099[7-9][0-9])|(50996[4-9])|(509[1-8][0-9][0-9])|(5090(0[0-2]|0[4-9]|1[2-9]|[24589][0-9]|3[1-9]|6[0-46-9]|7[0-24-9]))|(5067(0[0-24-8]|1[0-24-9]|2[014-9]|3[0-379]|4[0-9]|5[0-3]|6[0-5]|7[0-8]))|(6504(0[5-9]|1[0-9]|2[0-9]|3[0-9]))|(6504(8[5-9]|9[0-9])|6505(0[0-9]|1[0-9]|2[0-9]|3[0-8]))|(6505(4[1-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-8]))|(6507(0[0-9]|1[0-8]))|(65072[0-7])|(6509(0[1-9]|1[0-9]|20))|(6516(5[2-9]|6[0-9]|7[0-9]))|(6550(0[0-9]|1[0-9]))|(6550(2[1-9]|3[0-9]|4[0-9]|5[0-8])))/
+        )
+      ) {
+        return 'elo'
+      }
       if (number.match(/^3[47]\d{13}$/)) return 'amex'
       if (number.match(/^(5[1-5]\d{4}|677189)\d{10}$/)) return 'mastercard'
       if (number.match(/^6(?:011|5[0-9]{2})[0-9]{12}$/)) return 'discover'
@@ -263,9 +316,13 @@ export default {
       if (number.match(/^5019\d{12}$/)) return 'dankort'
       if (number.match(/^1\d{14}$/)) return 'uatp'
       if (number.match(/^220[0-4]\d{12}$/)) return 'mir'
-      if (number.match(/^(606282\d{10}(\d{3})?)|(3841\d{15})$/)) return 'hipercard'
+      if (number.match(/^(606282\d{10}(\d{3})?)|(3841\d{15})$/)) {
+        return 'hipercard'
+      }
       if (number.match(/^((?!504175))^((?!5067))(^50[0-9])/)) return 'aura'
-      if (number.match(/(?:5[0678]\d\d|6304|6390|67\d\d)\d{8,15}$/)) return 'maestro'
+      if (number.match(/(?:5[0678]\d\d|6304|6390|67\d\d)\d{8,15}$/)) {
+        return 'maestro'
+      }
 
       return ''
     },
@@ -277,13 +334,18 @@ export default {
     isBackgroundImageFromAssets () {
       const numberImage = parseInt(this.backgroundImage)
 
-      return Number.isFinite(numberImage) && parseInt(numberImage) < 26 && parseInt(numberImage) > 0
+      return (
+        Number.isFinite(numberImage) &&
+        parseInt(numberImage) < 26 &&
+        parseInt(numberImage) > 0
+      )
     },
     currentCardBackground () {
       const numberImage = parseInt(this.backgroundImage)
 
       if (this.isBackgroundImageFromAssets) {
-        return require(`../assets/images/${numberImage}.jpg`)
+        const path = require(`../assets/images/${numberImage}.jpg`)
+        return path.default || path
       }
 
       if (this.backgroundImage && !Number.isFinite(numberImage)) {
@@ -293,7 +355,8 @@ export default {
       if (this.hasRandomBackgrounds) {
         const random = Math.floor(Math.random() * 25 + 1)
 
-        return require(`../assets/images/${random}.jpg`)
+        const path = require(`../assets/images/${random}.jpg`)
+        return path.default || path
       }
 
       return null
@@ -303,10 +366,13 @@ export default {
     addOrRemoveFieldListeners (event = 'addEventListener') {
       const self = this
       const fields = document.querySelectorAll('[data-card-field]')
-      fields.forEach(element => {
+      fields.forEach((element) => {
         element[event]('focus', () => {
           this.isFocused = true
-          if (element.id === this.inputFields.cardYear || element.id === this.inputFields.cardMonth) {
+          if (
+            element.id === this.inputFields.cardYear ||
+            element.id === this.inputFields.cardMonth
+          ) {
             this.currentFocus = 'cardDate'
           } else {
             this.currentFocus = element.id
@@ -335,10 +401,10 @@ export default {
       const target = this.$refs[this.currentFocus]
       this.focusElementStyle = target
         ? {
-          width: `${target.offsetWidth}px`,
-          height: `${target.offsetHeight}px`,
-          transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
-        }
+            width: `${target.offsetWidth}px`,
+            height: `${target.offsetHeight}px`,
+            transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
+          }
         : null
     },
     getIsNumberMasked (index, n) {
@@ -360,7 +426,8 @@ export default {
         unionpay: this.unionPayCardPlaceholder
       }
 
-      this.currentPlaceholder = cardsPlaceholder[this.cardType] || this.defaultCardPlaceholder
+      this.currentPlaceholder =
+        cardsPlaceholder[this.cardType] || this.defaultCardPlaceholder
       this.$nextTick(() => {
         this.changeFocus()
       })

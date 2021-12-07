@@ -545,6 +545,47 @@ describe('When I create the VuePaycard component', () => {
     console.error = consoleLog
   })
 
+  it('expect card type to be emitted on change', async () => {
+    const valueFields = {
+      cardName: '',
+      cardNumber: '',
+      cardMonth: '',
+      cardYear: '',
+      cardCvv: ''
+    }
+    const wrapper = createPaycard({ valueFields })
+    expect(wrapper.exists()).toBeTruthy()
+    const valueFieldsAfter = {
+      cardName: 'visa test',
+      cardNumber: '4242 4242 4242 4242',
+      cardMonth: '12',
+      cardYear: '2021',
+      cardCvv: '123'
+    }
+    await wrapper.setProps({
+      valueFields: valueFieldsAfter
+    })
+    expect(wrapper.emitted()['get-type'][0]).toEqual(['visa']) // Data is emitted with expected value
+  })
+
+  it('should check for set card type', () => {
+    // *  this test needs improvement since require is not working properly, so it's checking the aria-label property
+    const valueFields = {
+      cardName: '',
+      cardNumber: '',
+      cardMonth: '',
+      cardYear: '',
+      cardCvv: ''
+    }
+    const wrapper = createPaycard({
+      valueFields,
+      setType: 'visa'
+    })
+    expect(wrapper.exists()).toBeTruthy()
+    const img = wrapper.find('.card-item__typeImg')
+    expect(img.attributes().alt).toContain('visa')
+  })
+
   it('should match default component snapshot', () => {
     const valueFields = { cardName: '', cardNumber: '', cardMonth: '', cardYear: '', cardCvv: '' }
     const wrapper = createPaycard({ valueFields })

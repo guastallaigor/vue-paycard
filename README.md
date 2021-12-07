@@ -3,7 +3,7 @@
   <h1>Vue Paycard</h1>
 </div>
 <p align="center">
-  Credit card component made with Vue.js
+  Credit card component made with Vue.js (Works with vue 2 & 3)
 </p>
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
@@ -64,6 +64,21 @@ import Vue from "vue";
 import VuePaycard from "vue-paycard";
 
 Vue.use(VuePaycard);
+```
+
+For Vue 3
+
+```js
+import { createApp, h } from "vue";
+import VuePaycard from "vue-paycard";
+
+const app = createApp({
+  render: () => h(App),
+});
+
+app.use(VuePaycard);
+
+app.mount("#app");
 ```
 
 Or locally in any component
@@ -128,6 +143,13 @@ plugins: [{ src: "~/plugins/vue-paycard.js", mode: "client" }];
 | is-card-number-masked  | Boolean          | true                                                                                                                                | Hides the numbers provided and changes to "\*". Only shows the last four digits                                                                                                                                                                                                                                                                                                      |
 | has-random-backgrounds | Boolean          | true                                                                                                                                | Set a random background image to the card. You can check all the images in `src/assets/images`                                                                                                                                                                                                                                                                                       |
 | background-image       | [String, Number] | ''                                                                                                                                  | Set a background image link to the card (overrides `has-random-backgrounds` prop), or you can pass a single valid number that matches the images name we have in `src/assets/images`                                                                                                                                                                                                 |
+| set-type               | String           | ''                                                                                                                                  | Set a card type from the supported card types ['visaelectron', 'visa', 'elo', 'amex', 'mastercard', 'discover', 'unionpay', 'troy', 'dinersclub', 'jcb', 'laser', 'dankort', 'uatp', 'mir', 'hipercard', 'aura', 'maestro']. Note that this will override the type generated from card number                                                                                        |
+
+## Events
+
+| Event name | Type   | Default | Description                               |
+| ---------- | ------ | ------- | ----------------------------------------- |
+| get-type   | String | null    | Emits the type generated from card number |
 
 ## Supported card types
 
