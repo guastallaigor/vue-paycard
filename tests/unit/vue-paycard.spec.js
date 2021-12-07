@@ -545,7 +545,7 @@ describe('When I create the VuePaycard component', () => {
     console.error = consoleLog
   })
 
-  it('expect card type to be emitted on change', async () => {
+  it('should expect card type to be emitted on change', async () => {
     const valueFields = {
       cardName: '',
       cardNumber: '',
@@ -569,7 +569,7 @@ describe('When I create the VuePaycard component', () => {
   })
 
   it('should check for set card type', () => {
-    // *  this test needs improvement since require is not working properly, so it's checking the aria-label property
+    // * this test needs improvement since require is not working properly, so it's checking the aria-label property
     const valueFields = {
       cardName: '',
       cardNumber: '',

@@ -3,7 +3,7 @@
   <h1>Vue Paycard</h1>
 </div>
 <p align="center">
-  Credit card component made with Vue.js (Works with vue 2 & 3)
+  Credit card component made with Vue.js (Works with Vue 2 & 3)
 </p>
 
 [![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
