@@ -1,228 +1,262 @@
-import VuePaycard from '../src/components/VuePaycard.vue'
+import VuePaycard from "../src/components/VuePaycard.vue";
 
 export default {
-  title: 'VuePaycard',
+  title: "VuePaycard",
   component: VuePaycard,
   parameters: {
     a11y: {
       // optional selector which element to inspect
-      element: '#root',
+      element: "#root",
       // axe-core configurationOptions (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#parameters-1)
       config: {},
       // axe-core optionsParameter (https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter)
       options: {},
       // optional flag to prevent the automatic check
-      manual: true
+      manual: true,
     },
     controls: { hideNoControlsWarning: true },
     docs: {
-      inlineStories: true
-    }
+      inlineStories: true,
+    },
   },
   argTypes: {
     valueFields: {
-      control: 'object'
+      control: "object",
     },
     inputFields: {
-      control: 'object'
+      control: "object",
     },
     labels: {
-      control: 'object'
+      control: "object",
     },
     isCardNumberMasked: {
-      control: 'boolean'
+      control: "boolean",
     },
     hasRandomBackgrounds: {
-      control: 'boolean'
+      control: "boolean",
     },
     backgroundImage: {
-      control: 'text'
-    }
+      control: "text",
+    },
+    setType: {
+      control: "text",
+    },
   },
   args: {
     valueFields: {
-      cardName: '',
-      cardNumber: '',
+      cardName: "",
+      cardNumber: "",
       cardMonth: null,
       cardYear: null,
-      cardCvv: null
+      cardCvv: null,
     },
     inputFields: {
-      cardNumber: 'v-card-number',
-      cardName: 'v-card-name',
-      cardMonth: 'v-card-month',
-      cardYear: 'v-card-year',
-      cardCvv: 'v-card-cvv'
+      cardNumber: "v-card-number",
+      cardName: "v-card-name",
+      cardMonth: "v-card-month",
+      cardYear: "v-card-year",
+      cardCvv: "v-card-cvv",
     },
     labels: {
-      cardName: 'Full Name',
-      cardHolder: 'Card Holder',
-      cardMonth: 'MM',
-      cardYear: 'YY',
-      cardExpires: 'Expires',
-      cardCvv: 'CVV'
+      cardName: "Full Name",
+      cardHolder: "Card Holder",
+      cardMonth: "MM",
+      cardYear: "YY",
+      cardExpires: "Expires",
+      cardCvv: "CVV",
     },
     isCardNumberMasked: false,
     hasRandomBackgrounds: true,
-    backgroundImage: ''
-  }
-}
+    backgroundImage: "",
+    setType: "",
+  },
+};
 
 export const DefaultComponent = () => ({
   components: { VuePaycard },
   directives: {
-    'number-only': {
-      bind (el) {
-        function checkValue (event) {
-          event.target.value = event.target.value.replace(/[^0-9]/g, '')
+    "number-only": {
+      bind(el) {
+        function checkValue(event) {
+          event.target.value = event.target.value.replace(/[^0-9]/g, "");
           if (event.charCode >= 48 && event.charCode <= 57) {
-            return true
+            return true;
           }
-          event.preventDefault()
+          event.preventDefault();
         }
-        el.addEventListener('keypress', checkValue)
-      }
+        el.addEventListener("keypress", checkValue);
+      },
     },
-    'letter-only': {
-      bind (el) {
-        function checkValue (event) {
+    "letter-only": {
+      bind(el) {
+        function checkValue(event) {
           if (event.charCode >= 48 && event.charCode <= 57) {
-            event.preventDefault()
+            event.preventDefault();
           }
-          return true
+          return true;
         }
-        el.addEventListener('keypress', checkValue)
-      }
-    }
+        el.addEventListener("keypress", checkValue);
+      },
+    },
   },
   data: () => ({
     minCardYear: new Date().getFullYear(),
-    mainCardNumber: '',
-    cardNumberMaxLength: 19
+    mainCardNumber: "",
+    cardNumberMaxLength: 19,
+    generatedType: "",
   }),
   computed: {
-    minCardMonth () {
-      if (this.valueFields.cardYear === this.minCardYear) return new Date().getMonth() + 1
-      return 1
-    }
+    minCardMonth() {
+      if (this.valueFields.cardYear === this.minCardYear)
+        return new Date().getMonth() + 1;
+      return 1;
+    },
   },
   watch: {
-    cardYear () {
+    cardYear() {
       if (this.valueFields.cardMonth < this.minCardMonth) {
-        this.valueFields.cardMonth = ''
+        this.valueFields.cardMonth = "";
       }
-    }
+    },
   },
   methods: {
-    changeName (e) {
-      this.valueFields.cardName = e.target.value
-      this.$emit('input-card-name', this.valueFields.cardName)
+    changeName(e) {
+      this.valueFields.cardName = e.target.value;
+      this.$emit("input-card-name", this.valueFields.cardName);
     },
-    changeNumber (e) {
-      this.valueFields.cardNumber = e.target.value
-      const value = this.valueFields.cardNumber.replace(/\D/g, '')
+    changeType(val) {
+      this.generatedType = val;
+    },
+    changeNumber(e) {
+      this.valueFields.cardNumber = e.target.value;
+      const value = this.valueFields.cardNumber.replace(/\D/g, "");
       // american express, 15 digits
-      if ((/^3[47]\d{0,13}$/).test(value)) {
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
-        this.cardNumberMaxLength = 17
-      } else if ((/^3(?:0[0-5]|[68]\d)\d{0,11}$/).test(value)) { // diner's club, 14 digits
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ')
-        this.cardNumberMaxLength = 16
+      if (/^3[47]\d{0,13}$/.test(value)) {
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{6})/, "$1 $2 ");
+        this.cardNumberMaxLength = 17;
+      } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(value)) {
+        // diner's club, 14 digits
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{6})/, "$1 $2 ");
+        this.cardNumberMaxLength = 16;
       } else if (/^62[0-9]\d*/.test(value)) {
-        this.valueFields.cardNumber = value.replace(/(\d{6})/, '$1 ').replace(/(\d{6}) (\d{7})/, '$1 $2 ').replace(/(\d{6}) (\d{7}) (\d{6})/, '$1 $2 $3 ').replace(/(\d{5}) (\d{5}) (\d{5}) (\d{4})/, '$1 $2 $3 $4')
-        this.cardNumberMaxLength = 21
-      } else if ((/^\d{0,16}$/).test(value)) { // regular cc number, 16 digits
-        this.valueFields.cardNumber = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ')
-        this.cardNumberMaxLength = 19
+        this.valueFields.cardNumber = value
+          .replace(/(\d{6})/, "$1 ")
+          .replace(/(\d{6}) (\d{7})/, "$1 $2 ")
+          .replace(/(\d{6}) (\d{7}) (\d{6})/, "$1 $2 $3 ")
+          .replace(/(\d{5}) (\d{5}) (\d{5}) (\d{4})/, "$1 $2 $3 $4");
+        this.cardNumberMaxLength = 21;
+      } else if (/^\d{0,16}$/.test(value)) {
+        // regular cc number, 16 digits
+        this.valueFields.cardNumber = value
+          .replace(/(\d{4})/, "$1 ")
+          .replace(/(\d{4}) (\d{4})/, "$1 $2 ")
+          .replace(/(\d{4}) (\d{4}) (\d{4})/, "$1 $2 $3 ");
+        this.cardNumberMaxLength = 19;
       }
       // eslint-disable-next-line
-      if (e.inputType == 'deleteContentBackward') {
-        const lastChar = this.valueFields.cardNumber.substring(this.valueFields.cardNumber.length, this.valueFields.cardNumber.length - 1)
+      if (e.inputType == "deleteContentBackward") {
+        const lastChar = this.valueFields.cardNumber.substring(
+          this.valueFields.cardNumber.length,
+          this.valueFields.cardNumber.length - 1
+        );
         // eslint-disable-next-line
-        if (lastChar == ' ') { this.valueFields.cardNumber = this.valueFields.cardNumber.substring(0, this.valueFields.cardNumber.length - 1) }
-      }
-      this.$emit('input-card-number', this.valueFields.cardNumber)
-    },
-    changeMonth () {
-      this.$emit('input-card-month', this.valueFields.cardMonth)
-    },
-    changeYear () {
-      this.$emit('input-card-year', this.valueFields.cardYear)
-    },
-    changeCvv (e) {
-      this.valueFields.cardCvv = e.target.value
-      this.$emit('input-card-cvv', this.valueFields.cardCvv)
-    },
-    generateMonthValue (n) {
-      return n < 10 ? `0${n}` : n
-    },
-    toggleMask () {
-      this.isCardNumberMasked = !this.isCardNumberMasked
-      if (this.isCardNumberMasked) {
-        this.maskCardNumber()
-      } else {
-        this.unMaskCardNumber()
-      }
-    },
-    maskCardNumber () {
-      this.valueFields.cardNumberNotMask = this.valueFields.cardNumber
-      this.mainCardNumber = this.valueFields.cardNumber
-      const arr = this.valueFields.cardNumber.split('')
-      arr.forEach((element, index) => {
-        if (index > 4 && index < 14 && element.trim() !== '') {
-          arr[index] = '*'
+        if (lastChar == " ") {
+          this.valueFields.cardNumber = this.valueFields.cardNumber.substring(
+            0,
+            this.valueFields.cardNumber.length - 1
+          );
         }
-      })
-      this.valueFields.cardNumber = arr.join('')
+      }
+      this.$emit("input-card-number", this.valueFields.cardNumber);
     },
-    unMaskCardNumber () {
-      this.valueFields.cardNumber = this.mainCardNumber
-    }
+    changeMonth() {
+      this.$emit("input-card-month", this.valueFields.cardMonth);
+    },
+    changeYear() {
+      this.$emit("input-card-year", this.valueFields.cardYear);
+    },
+    changeCvv(e) {
+      this.valueFields.cardCvv = e.target.value;
+      this.$emit("input-card-cvv", this.valueFields.cardCvv);
+    },
+    generateMonthValue(n) {
+      return n < 10 ? `0${n}` : n;
+    },
+    toggleMask() {
+      this.isCardNumberMasked = !this.isCardNumberMasked;
+      if (this.isCardNumberMasked) {
+        this.maskCardNumber();
+      } else {
+        this.unMaskCardNumber();
+      }
+    },
+    maskCardNumber() {
+      this.valueFields.cardNumberNotMask = this.valueFields.cardNumber;
+      this.mainCardNumber = this.valueFields.cardNumber;
+      const arr = this.valueFields.cardNumber.split("");
+      arr.forEach((element, index) => {
+        if (index > 4 && index < 14 && element.trim() !== "") {
+          arr[index] = "*";
+        }
+      });
+      this.valueFields.cardNumber = arr.join("");
+    },
+    unMaskCardNumber() {
+      this.valueFields.cardNumber = this.mainCardNumber;
+    },
   },
   props: {
     valueFields: {
       type: Object,
       default: {
-        cardName: '',
-        cardNumber: '',
+        cardName: "",
+        cardNumber: "",
         cardMonth: null,
         cardYear: null,
-        cardCvv: null
-      }
+        cardCvv: null,
+      },
     },
     inputFields: {
       type: Object,
       default: {
-        cardNumber: 'v-card-number',
-        cardName: 'v-card-name',
-        cardMonth: 'v-card-month',
-        cardYear: 'v-card-year',
-        cardCvv: 'v-card-cvv'
-      }
+        cardNumber: "v-card-number",
+        cardName: "v-card-name",
+        cardMonth: "v-card-month",
+        cardYear: "v-card-year",
+        cardCvv: "v-card-cvv",
+      },
     },
     labels: {
       type: Object,
       default: {
-        cardName: 'Full Name',
-        cardHolder: 'Card Holder',
-        cardMonth: 'MM',
-        cardYear: 'YY',
-        cardExpires: 'Expires',
-        cardCvv: 'CVV'
-      }
+        cardName: "Full Name",
+        cardHolder: "Card Holder",
+        cardMonth: "MM",
+        cardYear: "YY",
+        cardExpires: "Expires",
+        cardCvv: "CVV",
+      },
     },
     isCardNumberMasked: {
       type: Boolean,
-      default: true
+      default: true,
     },
     hasRandomBackgrounds: {
       type: Boolean,
-      default: true
+      default: true,
     },
     backgroundImage: {
       type: [String, Number],
-      default: ''
-    }
+      default: "",
+    },
+    setType: {
+      type: String,
+      default: "",
+    },
   },
   template: `
   <div class="card-form">
@@ -234,6 +268,8 @@ export const DefaultComponent = () => ({
         :isCardNumberMasked="isCardNumberMasked"
         :hasRandomBackgrounds="hasRandomBackgrounds"
         :backgroundImage="backgroundImage"
+        :setType="setType"
+        @get-type="changeType"
       />
       <div class="card-form__inner">
         <div class="card-input">
@@ -322,5 +358,5 @@ export const DefaultComponent = () => ({
       </div>
     </div>
   </div>
-  `
-})
+  `,
+});
