@@ -289,8 +289,8 @@ export default {
         'aura',
         'maestro'
       ]
-      const sT = this.setType.toLowerCase().replace(/ /g, '')
-      if (sT.length && AcceptedTypes.indexOf(sT) >= 0) return sT
+      const sT = this.setType?.toLowerCase()?.replace(/ /g, '')
+      if (sT?.length && AcceptedTypes.includes(sT)) return sT
 
       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
 
