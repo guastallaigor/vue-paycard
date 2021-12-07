@@ -95,7 +95,7 @@
 import VuePaycard from '../../src/components/VuePaycard'
 
 export default {
-  name: 'Form',
+  name: 'FormComponent',
   components: { VuePaycard },
   directives: {
     'number-only': {

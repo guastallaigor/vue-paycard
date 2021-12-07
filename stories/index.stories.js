@@ -39,7 +39,29 @@ export default {
       control: 'text'
     },
     setType: {
-      control: 'text'
+      control: {
+        type: 'select',
+        options: [
+          'visaelectron',
+          'visa',
+          'elo',
+          'amex',
+          'mastercard',
+          'discover',
+          'unionpay',
+          'troy',
+          'dinersclub',
+          'jcb',
+          'laser',
+          'dankort',
+          'uatp',
+          'mir',
+          'hipercard',
+          'aura',
+          'maestro',
+          ''
+        ]
+      }
     }
   },
   args: {

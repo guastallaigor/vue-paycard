@@ -254,7 +254,10 @@ export default {
   beforeDestroy () {
     this.destroy()
   },
+  // * This can't be tested since the project runs in Vue 2
+  /* istanbul ignore next */
   beforeUnmount () {
+    /* istanbul ignore next */
     this.destroy()
   },
   computed: {
@@ -270,7 +273,7 @@ export default {
       return path.default || path
     },
     cardType () {
-      const AcceptedTypes = [
+      const acceptedTypes = [
         'visaelectron',
         'visa',
         'elo',
@@ -289,8 +292,8 @@ export default {
         'aura',
         'maestro'
       ]
-      const sT = this.setType?.toLowerCase()?.replace(/ /g, '')
-      if (sT?.length && AcceptedTypes.includes(sT)) return sT
+      const setType = this.setType?.toLowerCase()?.replace(/ /g, '')
+      if (setType?.length && acceptedTypes.includes(setType)) return setType
 
       const number = this.valueFields.cardNumber.replace(/\s+/g, '')
 
