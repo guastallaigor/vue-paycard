@@ -22,7 +22,7 @@
       <div class="card-item__wrapper">
         <div class="card-item__top">
           <img
-            src="../assets/images/chip.png"
+            :src="chip"
             class="card-item__chip"
             alt="Card chip image"
           />
@@ -194,10 +194,10 @@ export default {
       type: Object,
       default: () => ({
         cardName: 'Full Name',
-        cardHolder: 'Card Holder',
+        cardHolder: 'NOME',
         cardMonth: 'MM',
-        cardYear: 'YY',
-        cardExpires: 'Expires',
+        cardYear: 'AA',
+        cardExpires: 'DATA EXP',
         cardCvv: 'CVV'
       })
     },
@@ -219,6 +219,10 @@ export default {
     }
   },
   emits: ['get-type'],
+  setup() {
+    let chip = require("../assets/images/chip.png")
+    return { chip }
+  },
   data () {
     const defaultPlaceholder = '#### #### #### ####'
 
