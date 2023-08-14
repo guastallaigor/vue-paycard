@@ -100,7 +100,7 @@
                 </transition-group>
               </div>
               <div class="card-item__name" v-else key="2">
-                {{ labels.cardName || "Full Name" }}
+                {{ labels.cardName || "Nome Completo" }}
               </div>
             </transition>
           </label>
