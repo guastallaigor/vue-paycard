@@ -1,10 +1,10 @@
 {
   "name": "vue-paycard-portuguese",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": false,
   "description": "Credit card component made with Vue.js",
-  "homepage": "https://github.com/guastallaigor/vue-paycard#readme",
-  "author": "Igor Guastalla de Lima <limaguastallaigor@gmail.com>",
+  "homepage": "https://github.com/kingkaibr/vue-paycard-portuguese#readme",
+  "author": "Kaue Avila <trabalho.kaue@hotmail.com>",
   "scripts": {
     "delete-dev:css": "rimraf src/assets/css/style.dev.css",
     "build:cleancss": "cleancss src/assets/css/style.dev.css -o src/assets/css/style.min.css --source-map",
@@ -113,7 +113,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/guastallaigor/vue-paycard/issues"
+    "url": "https://github.com/kingkaibr/vue-paycard-portuguese/issues"
   },
   "files": [
     "src/*",
@@ -134,7 +134,7 @@
   "main": "./vue-paycard.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com:guastallaigor/vue-paycard.git"
+    "url": "https://github.com:kingkaibr/vue-paycard-portuguese.git"
   },
   "commitlint": {
     "extends": [

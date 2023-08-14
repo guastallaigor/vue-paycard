@@ -193,7 +193,7 @@ export default {
     labels: {
       type: Object,
       default: () => ({
-        cardName: 'Full Name',
+        cardName: 'Nome Completo',
         cardHolder: 'NOME',
         cardMonth: 'MM',
         cardYear: 'AA',

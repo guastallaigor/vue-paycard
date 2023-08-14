@@ -6,12 +6,9 @@
   Credit card component made with Vue.js (works with Vue 2 & 3)
 </p>
 
-[![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
-[![GithubActions](https://github.com/guastallaigor/vue-paycard/workflows/vue-paycard/badge.svg)](https://github.com/guastallaigor/vue-paycard/actions)
-[![Coverage Status](https://coveralls.io/repos/github/guastallaigor/vue-paycard/badge.svg?branch=master)](https://coveralls.io/github/guastallaigor/vue-paycard?branch=master)
+[![Version](https://img.shields.io/npm/v/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard-portuguese)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![Downloads](https://img.shields.io/npm/dt/vue-paycard.svg)](https://www.npmjs.com/package/vue-paycard)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a87b7690-b534-4c67-b4a6-60e586bd79b5/deploy-status)](https://app.netlify.com/sites/vue-paycard/deploys)
 
 > This component is based on <a href="https://github.com/muhammederdem/vue-interactive-paycard" target="_blank">Vue Interactive Paycard</a>. All the credits for the component (idea, design, images, core code) goes to it </br></br>
 > This project only exports the Card component, **you** will need to create your own form
@@ -172,7 +169,7 @@ plugins: [{ src: "~/plugins/vue-paycard.js", mode: "client" }];
 
 ## Development
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/guastallaigor/vue-paycard/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kingkaibr/vue-paycard-portuguese/issues)
 
 > **Note**: Contributions are very welcomed, however is very important to open a new issue using the issue template **before** you start working on anything, so we can discuss it before hand
 
@@ -222,4 +219,4 @@ If an error occurs, you can use the `yarn commit:retry` command that runs the pr
 
 ## License
 
-[MIT](https://github.com/guastallaigor/vue-paycard/blob/master/LICENSE) © 2020
+[MIT](https://github.com/kingkaibr/vue-paycard-portuguese/blob/master/LICENSE) © 2023
